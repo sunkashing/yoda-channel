@@ -1,0 +1,4 @@
+django==3.0.2
+django-haystack==3.0b1
+whoosh
+django-environ
