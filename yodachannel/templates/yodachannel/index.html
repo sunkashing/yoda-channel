@@ -1,0 +1,13 @@
+{% extends 'yodachannel/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>主页 | Yoda Channel</title>
+{% endblock %}
+
+{% block css %}
+    <link href="{% static 'yodachannel/css/index.css' %}?{% now 'U' %}" rel="stylesheet">
+{% endblock %}
+
+{% block contents %}
+{% endblock %}
