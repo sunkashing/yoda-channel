@@ -1,0 +1,51 @@
+{% extends 'yodachannel/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>简介 | Yoda Channel</title>
+{% endblock %}
+
+{% block css %}
+    <link href="{% static 'yodachannel/css/base.css' %}?{% now 'U' %}" rel="stylesheet">
+{% endblock %}
+
+{% block contents %}
+    <div class="article article_prof">
+
+        <div class="profHead">
+            <div class="cut-protect">
+                <div class="profile_image_container">
+                    <img style="height: 100%; width: auto" src="{% static 'yodachannel/images/yoda_profile_origin.png' %}">
+                </div>
+                <div class="verticalLine"></div>
+                <div style="padding-left: 15px; display: inline-block"></div>
+                <div class="info">
+                    <div class="profName"><b>与田祐希</b><span>／よだゆうき</span></div>
+                    <hr>
+                    <div class="profTable">
+                        <table class="border-style">
+                            <tr>
+                                <td class="first">生日</td><td>2000年5月5日</td>
+                            </tr>
+                            <tr>
+                                <td class="first">出身地</td><td>福冈县</td>
+                            </tr>
+                            <tr>
+                                <td class="first">血型</td><td>O型</td>
+                            </tr>
+                            <tr>
+                                <td class="first">星座</td><td>金牛座</td>
+                            </tr>
+                            <tr>
+                                <td class="first">身高</td><td>152cm</td>
+                            </tr>
+                            <tr>
+                                <td class="first">昵称</td><td>Yoda-chan(よだちゃん)</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
