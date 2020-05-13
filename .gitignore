@@ -2,8 +2,9 @@
 .idea
 *.pyc
 db.sqlite3
-migrations
+yodachannel/migrations/
 whoosh_index
-yodachannel/media
+yodachannel/media/
 .env
-weibo
+yodachannel/static/yodachannel/images/weibo/
+yodachannel/static/yodachannel/videos/weibo/
