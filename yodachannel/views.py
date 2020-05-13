@@ -1,20 +1,32 @@
 import json
+import os
 
+from django.core import serializers
+from django.core.paginator import Paginator
 from django.core.serializers import serialize
+from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 
 # Create your views here.
 # 定义最基本的 API 视图
+from django.templatetags.static import static
 from django.views import View
+
+from webapps import settings
+from .load_weibo import load_weibo
 from .mixins import APIDetailMixin, APIUpdateMixin, \
     APIDeleteMixin, APIListMixin, \
     APICreateMixin, APIMethodMapMixin, APISingleObjectMixin  # 引入我们编写的所有
 
 from django.http import HttpResponseRedirect
 
+from .models import Weibo, WeiboPicture
+
 consumer_key = ''  # 设置你申请的appkey
 consumer_secret = ''  # 设置你申请的appkey对于的secret
+
+mails_per_page = 5
 
 
 class APIView(View):
@@ -105,9 +117,64 @@ def css(request, filename):
 
 def index_action(request):
     context = {}
+    if not Weibo.objects.exists():
+        load_weibo(os.path.join(settings.STATICFILES_DIR, 'yodachannel/json/5173636286.json'))
     return render(request=request, template_name='yodachannel/index.html', context=context)
 
 
 def profile_action(request):
     context = {}
     return render(request=request, template_name='yodachannel/profile.html', context=context)
+
+
+def mail_action(request, order):
+    context = {}
+    if str(order) == 'old':
+        mails = Weibo.objects.filter(is_mail=True).order_by('created_at')
+        context['old'] = True
+    else:
+        mails = Weibo.objects.filter(is_mail=True).order_by('-created_at')
+        context['old'] = False
+    mails_paginator = Paginator(mails, mails_per_page)
+
+    mail_page_num = 1
+    context['mails'] = mails_paginator.get_page(mail_page_num).object_list
+    context['mails_pictures'] = get_mails_pictures(context['mails'])
+    context['page_num'] = 1
+    return render(request=request, template_name='yodachannel/mail.html', context=context)
+
+
+def mail_page_action(request):
+    context = {}
+    order = str(request.GET.get('order'))
+    if order == 'old':
+        mails = Weibo.objects.filter(is_mail=True).order_by('created_at')
+    else:
+        mails = Weibo.objects.filter(is_mail=True).order_by('-created_at')
+    mails_paginator = Paginator(mails, mails_per_page)
+    mail_page_num = int(request.GET.get('page_num'))
+
+    context['status'] = 'SUCCESS'
+    if type(mail_page_num) is not int:
+        mail_page_num = 1
+        context['status'] = 'FAIL'
+    else:
+        mail_page_num += 1
+    mails_list = [mail for mail in mails_paginator.get_page(mail_page_num).object_list]
+    context['mails'] = [serializers.serialize('json', [mail, ]) for mail in mails_list]
+    context['mails_pictures'] = [serializers.serialize('json', [pic, ]) for pic in get_mails_pictures(mails_list)]
+    context['new_page_num'] = mail_page_num
+
+    # 判断是否有下一页数据
+    if mails_paginator.get_page(mail_page_num).has_next():
+        context['has_next'] = 'true'
+    else:
+        context['has_next'] = 'false'
+    return JsonResponse(context)
+
+
+def get_mails_pictures(mails):
+    res = []
+    for mail in mails:
+        res.extend([pic for pic in WeiboPicture.objects.filter(weibo=mail)])
+    return res

@@ -4796,7 +4796,9 @@ input[type="button"].btn-block {
               flex-direction: row; }
       /* line 161, node_modules/bootstrap/scss/_navbar.scss */
       .navbar-expand-lg .navbar-nav .dropdown-menu {
-        position: absolute; }
+        position: absolute;
+          background-color: rgba(255, 255, 255, 0.5);
+      }
       /* line 165, node_modules/bootstrap/scss/_navbar.scss */
       .navbar-expand-lg .navbar-nav .nav-link {
           padding: 4px;
@@ -4923,10 +4925,12 @@ input[type="button"].btn-block {
 
 /* line 208, node_modules/bootstrap/scss/_navbar.scss */
 .navbar-light .navbar-nav .nav-link {
-  color: rgba(0, 0, 0, 1); }
+  color: rgba(0, 0, 0, 1);
+    font-weight: bold;
+}
   /* line 17, node_modules/bootstrap/scss/mixins/_hover.scss */
   .navbar-light .navbar-nav .nav-link:hover, .navbar-light .navbar-nav .nav-link:focus {
-    color: rgba(0, 0, 0, 0.5); }
+    color: rgba(0, 0, 0, 0.7); }
   /* line 215, node_modules/bootstrap/scss/_navbar.scss */
   .navbar-light .navbar-nav .nav-link.disabled {
     color: rgba(0, 0, 0, 0.3); }
@@ -8527,7 +8531,7 @@ button.bg-gray200:focus {
   right: 0;
   left: 0;
   z-index: 2147483647;
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 /* line 23, node_modules/bootstrap/scss/utilities/_position.scss */

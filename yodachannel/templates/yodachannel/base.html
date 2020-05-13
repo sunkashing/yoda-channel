@@ -5,17 +5,18 @@
         <meta charset="utf-8">
 
         <link rel="icon" type="image/png" sizes="180x180" href="{% static 'yodachannel/images/yodachannel_logo.ico' %}?{% now 'U' %}">
-    {#    <link href="{% static 'yodachannel/css/slick.css' %}?{% now 'U' %}" rel="stylesheet">#}
-    {#    <link href="https://fonts.googleapis.com/earlyaccess/mplus1p.css" rel="stylesheet">#}
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-    {#    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-135349821-4"></script>#}
         <link href="{% static 'yodachannel/css/index_v2.css' %}?{% now 'U' %}" rel="stylesheet">
-{#        <script src="{% static 'yodachannel/js/jquery-2.1.4.js' %}" type="text/javascript"></script>#}
         <link rel="stylesheet" href="{% static 'yodachannel/css/app.css' %}?{% now 'U' %}">
         <link rel="stylesheet" href="{% static 'yodachannel/css/base.css' %}?{% now 'U' %}">
         <link rel="stylesheet" href="{% static 'yodachannel/css/theme.css' %}?{% now 'U' %}">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="{% static 'yodachannel/js/jquery-2.1.4.js' %}" type="text/javascript"></script>
+        <script src="{% static 'yodachannel/js/app.js'%}?{% now 'U' %}"></script>
+        <script src="{% static 'yodachannel/js/theme.js'%}?{% now 'U' %}"></script>
+        {% block js %}
+        {% endblock %}
 
         {% block css %}
         {% endblock %}
@@ -33,7 +34,7 @@
                         <a href="{% url 'index' %}">
                             <div>
                                 <div style="height: 58px; width: 82px; display: inline-block; vertical-align: bottom">
-                                    <object data="{% static 'yodachannel/images/yodachannel_logo.svg' %}" type="image/svg+xml"></object>
+                                    <object data="{% static 'yodachannel/images/yodachannel_logo_82x58.svg' %}" type="image/svg+xml"></object>
                                 </div>
                                 <div style="display:inline-block;">
                                     <span style="letter-spacing: 4px">Yoda Channel</span><br>字幕组
@@ -41,10 +42,6 @@
                             </div>
                         </a>
                     </h1>
-    {#                <a class="navbar-brand font-weight-bolder mr-3" href="{% url 'index' %}">#}
-    {#                    <i class="material-icons prefix" id="website-icon">store_front</i>#}
-    {#                    <div class="website-title">CMU Flea Market</div>#}
-    {#                </a>#}
             </div>
                 <button class="navbar-light navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsDefault" aria-controls="navbarsDefault" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -65,103 +62,126 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'index' %}">主页</a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'profile' %}">Yoda简介</a>
+                            <a class="nav-link" href="{% url 'profile' %}">Yoda 简介</a>
                         </li>
-        {#                <li class="nav-item">#}
-        {#                    {% if page == 'author' %}#}
-        {#                        <a class="nav-link active" href="{% url 'author' %}">#}
-        {#                            {% if customer.picture %}#}
-        {#                                <img class="rounded-circle mr-2" src="{% url 'customer_photo' user.id %}" width="30">#}
-        {#                            {% else %}#}
-        {#                                <img class="rounded-circle mr-2" src="{% static 'flea_market/images/av.png'%}" width="30">#}
-        {#                            {% endif %}#}
-        {#                            <span class="align-middle">{{ user.first_name }} {{ user.last_name }}</span>#}
-        {#                        </a>#}
-        {#                    {% else %}#}
-        {#                        <a class="nav-link" href="{% url 'author' %}">#}
-        {#                            {% if customer.picture %}#}
-        {#                                <img class="rounded-circle mr-2" src="{% url 'customer_photo' user.id %}" width="30">#}
-        {#                            {% else %}#}
-        {#                                <img class="rounded-circle mr-2" src="{% static 'flea_market/images/av.png'%}" width="30">#}
-        {#                            {% endif %}#}
-        {#                            <span class="align-middle">{{ user.first_name }} {{ user.last_name }}</span>#}
-        {#                        </a>#}
-        {#                    {% endif %}#}
-        {#                </li>#}
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Yoda 手机博&博客
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">
+                                <span class="dropdown-item">
+                                    <a href="{% url 'mail' 'new' %}" class="d-block">
+                                        <i class="material-icons prefix">local_post_office</i>
+                                        <span class="in-line-span">手机博</span>
+                                    </a>
+                                    <hr>
+                                    <a href="{% url 'index' %}" class="d-block">
+                                        <i class="material-icons prefix">edit</i>
+                                        <span class="in-line-span">博客</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Yoda 资讯
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">
+                                <span class="dropdown-item">
+                                    <a href="{% url 'index' %}" class="d-block">
+                                        <i class="material-icons prefix">event</i>
+                                        <span class="in-line-span">活动通告</span>
+                                    </a>
+                                    <hr>
+                                    <a href="{% url 'index' %}" class="d-block">
+                                        <i class="material-icons prefix">videocam</i>
+                                        <span class="in-line-span">花絮视频</span>
+                                    </a>
+                                    <hr>
+                                    <a href="{% url 'index' %}" class="d-block">
+                                        <i class="material-icons prefix">work</i>
+                                        <span class="in-line-span">CM</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Yoda 图集
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">
+                                <span class="dropdown-item">
+                                    <a href="{% url 'index' %}" class="d-block">
+                                        <i class="material-icons prefix">photo_camera</i>
+                                        <span class="in-line-span">写真集</span>
+                                    </a>
+                                    <hr>
+                                    <a href="{% url 'index' %}" class="d-block">
+                                        <i class="material-icons prefix">book</i>
+                                        <span class="in-line-span">杂志</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Yoda 视频
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">
+                                <span class="dropdown-item">
+                                    <a href="{% url 'index' %}" class="d-block">
+                                        <i class="material-icons prefix">live_tv</i>
+                                        <span class="in-line-span">综艺</span>
+                                    </a>
+                                    <hr>
+                                    <a href="{% url 'index' %}" class="d-block">
+                                        <i class="material-icons prefix">accessibility_new</i>
+                                        <span class="in-line-span">日常</span>
+                                    </a>
+                                </span>
+                            </div>
+                        </li>
+
                         <li class="nav-item dropdown">
                             <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <svg style="margin-top:10px;" class="_3DJPT" version="1.1" viewbox="0 0 32 32" width="21" height="21" aria-hidden="false" data-reactid="71"><path d="M7 15.5c0 1.9-1.6 3.5-3.5 3.5s-3.5-1.6-3.5-3.5 1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5zm21.5-3.5c-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5-1.6-3.5-3.5-3.5zm-12.5 0c-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5-1.6-3.5-3.5-3.5z" data-reactid="22"></path></svg>
                             </a>
-        {#                    <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">#}
-        {#                        <span class="dropdown-item">#}
-        {#                            <a href="{% url 'register' %}" class="d-block">#}
-        {#                                <i class="material-icons prefix">person_add</i><span class="in-line-span">Register</span>#}
-        {#                            </a>#}
-        {#                            <hr>#}
-        {#                            <a href="{% url 'logout' %}" class="d-block">#}
-        {#                                <i class="material-icons prefix">exit_to_app</i><span class="in-line-span">Logout</span>#}
-        {#                            </a>#}
-        {#                        </span>#}
-        {#                    </div>#}
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
         <div class="container">
-
-{#            <div class="header_wrap">#}
-{##}
-{#                <header class="header">#}
-
-{#                    <div class="menu">#}
-{#                        <nav class="nav btn-hamburger btn-right btn-toggle"><span class="icon-bar icon-bar1"></span><span class="icon-bar icon-bar2"></span><span class="icon-bar icon-bar3"></span></nav>#}
-{#                        <ul class="menu_group">#}
-{#                            <li class="menu_list"><a href="/s/m04/news/list?ima=5220">Yoda信息</a></li>#}
-{#                            <li class="menu_list"><a href="{% url 'profile' %}">Yoda简介</a></li>#}
-{#                            <li class="menu_list"><a href="/s/m04/page/profile?ima=5220">Yoda图集</a></li>#}
-{#                            <li class="menu_list"><a href="/s/m04/diary/works/list?ima=5220">关于YodaChannel</a></li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                </header>#}
-{#            </div>#}
-
-{#            <main class="main main_list" style="background-image:url('{% static 'yodachannel/images/yoda_header_blur.png' %}');">#}
-        {#        <div class="page_title">#}
-        {#            <div class="page_title_in">#}
-        {#                    <div class="en">#}
-        {#                        {% block page_title %}#}
-        {#                            Yoda 简介#}
-        {#                        {% endblock %}#}
-        {#                    </div>#}
-        {#            </div>#}
-        {#        </div>#}
-{#            </main>#}
-
             <div class="contents">
                 {% block contents %}
                 {% endblock %}
             </div>
         </div>
-        {#    </div><footer class="footer">#}
-        {#                <div class="footer_container">#}
-        {#                    <div class="footer_logo pc"><a href="/s/m04/?ima=4308"><span style="letter-spacing: 4px" >Yoda Channel</span> 字幕组</a></div>#}
-        {#                    <div class="footer_logo sp"><a href="/s/m04/?ima=4308"><span style="letter-spacing: 4px">Yoda Channel</span><br>字幕组</a></div>#}
-        {#                    <div class="footer_menu">#}
-        {#                        <ul class="footer_menu_group">#}
-        {#                            <li class="footer_menu_list"><a href="/s/m04/news/list?ima=5220">Yoda信息</a></li>#}
-        {#                            <li class="footer_menu_list"><a href="/s/m04/media/list?ima=5220&dy=202005">Yoda简介</a></li>#}
-        {#                            <li class="footer_menu_list"><a href="/s/m04/page/profile?ima=5220">Yoda图集</a></li>#}
-        {#                            <li class="footer_menu_list"><a href="/s/m04/diary/works/list?ima=5220">关于YodaChannel</a></li>#}
-        {#                        </ul>#}
-        {#                    </div>#}
-        {#                </div>#}
-        {#            </footer>#}
-        {#    </div>#}
-        {% block js %}
-            <script src="{% static 'yodachannel/js/app.js'%}?{% now 'U' %}"></script>
-            <script src="{% static 'yodachannel/js/theme.js'%}?{% now 'U' %}"></script>
-        {% endblock %}
+
+        <footer class="footer pt-5 pb-5 text-center">
+            <div class="container">
+                <div class="socials-media">
+                    <ul class="list-unstyled">
+                        <li class="d-inline-block ml-1 mr-1">
+                            <a href="#" class="text-dark">
+                                <div style="height: 24px; width: 33px; display: inline-block; vertical-align: bottom">
+                                    <object data="{% static 'yodachannel/images/yodachannel_logo_33x24.svg' %}" type="image/svg+xml"></object>
+                                </div>
+                                About YodaChannel
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </footer>
+
+
     </body>
 </html>

@@ -80,7 +80,7 @@
 .verticalLine {
   padding-left: 15px;
 
-  border-right: 2px solid #6e6e6e;
+  /*border-right: 2px solid #6e6e6e;*/
   display: inline-block;
   height: 300px;
   vertical-align: middle;
@@ -117,4 +117,11 @@
 
 table.border-style tr td.first {
   border-left: 3px solid royalblue;
+}
+
+.dropdown-menu a i {
+  vertical-align: middle;
+}
+.dropdown-menu a span {
+  vertical-align: middle;
 }

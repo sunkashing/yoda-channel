@@ -1,0 +1,18 @@
+{
+    "user_id_list": ["7452234433"],
+    "filter": 0,
+    "since_date": "2020-05-05",
+    "write_mode": ["csv","json"],
+    "original_pic_download": 1,
+    "retweet_pic_download": 0,
+    "original_video_download": 1,
+    "retweet_video_download": 0,
+    "cookie": "SINAGLOBAL=8812970780356.08.1587675354640; _s_tentry=passport.weibo.com; Apache=2961417904624.5815.1589006915878; ULV=1589006916775:2:1:1:2961417904624.5815.1589006915878:1587675355367; login_sid_t=98a9b639352ba721d4992edf73611fc7; cross_origin_proto=SSL; Ugrow-G0=140ad66ad7317901fc818d7fd7743564; YF-V5-G0=8c1ea32ec7cf68ca3a1513783c276b8c; TC-V5-G0=eb26629f4af10d42f0485dca5a8e5e20; wb_view_log_1949093417=1440*9002; appkey=; _ga=GA1.2.1126070274.1589170791; _gid=GA1.2.815037211.1589170791; wb_view_log=1440*9002; __gads=ID=5ea19c35c9c24e72:T=1589170796:S=ALNI_Mb_ENsGTQRUV5t0pukMnG-3ASHWmw; wb_view_log_7452234433=1440*9002; WBtopGlobal_register_version=fd6b3a12bb72ffed; WB_register_version=fd6b3a12bb72ffed; YF-Page-G0=e57fcdc279d2f9295059776dec6d0214|1589171934|1589171934; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9Wh27asShE2NzesKpcT-eosk5JpX5K2hUgL.Fo24Sh.71KeXeKM2dJLoI7DKUg4uqPSQIg4r; ALF=1620716833; SSOLoginState=1589180861; SCF=AjY3_lE7_HPoUi8fSp99gBkO4EX7yaw6lZOGuPLCkcCQ40gi1PoT37WYo38ASlH5I0JgdxGZpviFlt6fsyXdOtY.; SUB=_2A25zvInoDeRhGedH71sR-S3IyjuIHXVQy_wgrDV8PUNbmtAfLRn1kW9NUKEq1EE6ujgf5wE9GbwmpkAVkt6V7nEx; SUHB=04WfUj7l8-yVXl; un=441580902@qq.com; wvr=6; UOR=,,mail.qq.com; TC-Page-G0=8dc78264df14e433a87ecb460ff08bfe|1589185521|1589185463; webim_unReadCount=%7B%22time%22%3A1589185521995%2C%22dm_pub_total%22%3A9%2C%22chat_group_client%22%3A0%2C%22chat_group_notice%22%3A0%2C%22allcountNum%22%3A48%2C%22msgbox%22%3A0%7D",
+    "mysql_config": {
+        "host": "localhost",
+        "port": 3306,
+        "user": "root",
+        "password": "123456",
+        "charset": "utf8mb4"
+    }
+}

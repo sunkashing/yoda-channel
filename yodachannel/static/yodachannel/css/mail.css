@@ -1,0 +1,103 @@
+.mails-container {
+    margin-top: 40px;
+    padding: 0 120px;
+}
+
+.mail-info-container {
+    margin-bottom: 15px;
+}
+
+.mail-info {
+
+}
+
+.weibo-cat {
+    padding: 3px 10px;
+    background-color: #888585;
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 300;
+    color: #fff;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.mail-title-container {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    /*background-color: cornflowerblue;*/
+}
+
+.mail-title {
+    border: 1px solid;
+    border-radius: 5px;
+    padding: 1px 15px;
+    font-family: 游明朝, "Yu Mincho", YuMincho, "Hiragino Mincho ProN", "Hiragino Mincho Pro", HGS明朝E, メイリオ, Meiryo, serif;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.mail-date {
+    font-style: italic;
+    font-weight: 100;
+    vertical-align: bottom;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.mail-container {
+    margin-bottom: 80px;
+    padding: 30px;
+    /*background-color: rosybrown;*/
+    border-radius: 20px;
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+    background-color: rgb(34, 44, 57);
+    color: white;
+}
+
+.mail-text {
+ padding: 0 10px;
+ font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
+ border-left: 2px solid green;
+ font-weight: bold;
+ /*background-color: #F7EED6;*/
+}
+
+.mail-pictures-container {
+ display: flex;
+ justify-content: center;
+}
+
+.mail-picture_container {
+ padding: 15px 20px;
+ width: 300px;
+ height: auto;
+}
+
+.side-bar {
+    height: auto;
+    width: 100px;
+    position: fixed;
+    top: 450px;
+    right: 50px;
+    background-color: #2f365a;
+    border-radius: 15px;
+    box-shadow: 0 3px 4px rgba(0,0,0,0.5);
+}
+
+.side-bar-content-container {
+    padding: 20px 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+.side-bar-content-container a {
+    color: white;
+}
+
+.side-bar-no-active {
+    opacity: 50%;
+}

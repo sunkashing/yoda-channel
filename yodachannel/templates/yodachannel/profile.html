@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block css %}
-    <link href="{% static 'yodachannel/css/base.css' %}?{% now 'U' %}" rel="stylesheet">
+    <link href="{% static 'yodachannel/css/profile.css' %}?{% now 'U' %}" rel="stylesheet">
 {% endblock %}
 
 {% block contents %}
@@ -41,6 +41,13 @@
                             </tr>
                             <tr>
                                 <td class="first">昵称</td><td>Yoda-chan(よだちゃん)</td>
+                            </tr>
+                            <tr>
+                                <td class="first">应援色</td>
+                                <td>
+                                    <div class="yoda-color red" title="红"></div>
+                                    <div class="yoda-color green" title="绿"></div>
+                                </td>
                             </tr>
                         </table>
                     </div>

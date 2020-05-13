@@ -1,0 +1,82 @@
+{% extends 'yodachannel/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>手机博 | Yoda Channel</title>
+{% endblock %}
+
+{% block css %}
+    <link href="{% static 'yodachannel/css/mail.css' %}?{% now 'U' %}" rel="stylesheet">
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'yodachannel/js/mail.js'%}?{% now 'U' %}"></script>
+{% endblock %}
+
+{% block contents %}
+
+    <div class="side-bar">
+        <div class="side-bar-content-container">
+            {% if old %}
+                <a href="{% url 'mail' 'new' %}" class="side-bar-no-active">
+                    最新
+                </a>
+                <hr>
+                <a href="{% url 'mail' 'old' %}" class="side-bar-active">
+                    最旧
+                </a>
+            {% else %}
+                <a href="{% url 'mail' 'new' %}" class="side-bar-active">
+                    最新
+                </a>
+                <hr>
+                <a href="{% url 'mail' 'old' %}" class="side-bar-no-active">
+                    最旧
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mails-container">
+        {% for mail in mails %}
+            <div class="mail-container">
+                <a>
+                    <div class="mail-title-container">
+                        <div class="inline">
+                            <div class="mail-title inline">
+                                {{ mail.mail_title }}
+                            </div>
+                            <div class="mail-info mail-date inline">
+                                {{ mail.created_at | date:"Y/m/d" }}
+                            </div>
+                        </div>
+                        <div class="mail-info weibo-cat inline">
+                            Mail
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="padding: 10px 30px;">
+                        <div class="mail-text">
+                            {{ mail.mail_text }}
+                        </div>
+                    </div>
+                </a>
+                {% if mails_pictures %}
+                    <hr>
+                    <div class="mail-pictures-container">
+                        {% for pic in mails_pictures %}
+                            {% if pic.weibo_id == mail.id %}
+                                <div class="mail-picture_container inline">
+                                    <img src="{% static 'yodachannel/images/weibo/' %}{{ pic.file_name }}">
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <input id="hidden-page-num" type="hidden" value="{{ page_num }}">
+
+{% endblock %}

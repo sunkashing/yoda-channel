@@ -1,7 +1,9 @@
 .DS_Store
+.idea
 *.pyc
 db.sqlite3
 migrations
 whoosh_index
-media
+yodachannel/media
 .env
+weibo

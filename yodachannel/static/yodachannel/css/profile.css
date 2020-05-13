@@ -1,0 +1,16 @@
+.yoda-color {
+    display: inline-block;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+}
+
+.green {
+    background-color: green;
+    color: green;
+}
+
+.red {
+    background-color: red;
+    color: red;
+}
