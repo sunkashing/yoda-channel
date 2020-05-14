@@ -22,14 +22,15 @@
     text-align: center;
 }
 
-.mail-title-container {
+.blog-title-container {
+    color: white;
     margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     /*background-color: cornflowerblue;*/
 }
 
-.mail-title {
+.blog-title {
     border: 1px solid;
     border-radius: 5px;
     padding: 1px 15px;
@@ -38,7 +39,7 @@
     margin-right: 10px;
 }
 
-.mail-date {
+.blog-date {
     font-style: italic;
     font-weight: 100;
     vertical-align: bottom;
@@ -48,7 +49,7 @@
     display: inline-block;
 }
 
-.mail-container {
+.blog-container {
     margin-bottom: 80px;
     padding: 30px;
     /*background-color: rosybrown;*/
@@ -58,7 +59,12 @@
     color: white;
 }
 
-.mail-text {
+.blog-container:hover {
+    transform: translate(15px, -15px);
+    transition: transform 0.5s;
+}
+
+.blog-text {
  padding: 0 10px;
  font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;
  border-left: 2px solid green;
@@ -66,18 +72,18 @@
  /*background-color: #F7EED6;*/
 }
 
-.mail-pictures-container {
+.blog-pictures-container {
  display: flex;
  justify-content: center;
 }
 
-.mail-picture_container {
+.blog-picture_container {
     margin: 15px 20px;
     width: 300px;
     height: auto;
 }
 
-.mail-picture {
+.blog-picture {
     border-radius: 15px;
 }
 

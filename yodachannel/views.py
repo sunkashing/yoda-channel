@@ -27,7 +27,7 @@ consumer_key = ''  # 设置你申请的appkey
 consumer_secret = ''  # 设置你申请的appkey对于的secret
 
 mails_per_page = 5
-
+blogs_per_page = 5
 
 class APIView(View):
     def response(self,
@@ -139,7 +139,7 @@ def mail_action(request, order):
 
     mail_page_num = 1
     context['mails'] = mails_paginator.get_page(mail_page_num).object_list
-    context['mails_pictures'] = get_mails_pictures(context['mails'])
+    context['mails_pictures'] = get_weibo_pictures(context['mails'])
     context['page_num'] = 1
     return render(request=request, template_name='yodachannel/mail.html', context=context)
 
@@ -162,7 +162,7 @@ def mail_page_action(request):
         mail_page_num += 1
     mails_list = [mail for mail in mails_paginator.get_page(mail_page_num).object_list]
     context['mails'] = [serializers.serialize('json', [mail, ]) for mail in mails_list]
-    context['mails_pictures'] = [serializers.serialize('json', [pic, ]) for pic in get_mails_pictures(mails_list)]
+    context['mails_pictures'] = [serializers.serialize('json', [pic, ]) for pic in get_weibo_pictures(mails_list)]
     context['new_page_num'] = mail_page_num
 
     # 判断是否有下一页数据
@@ -173,8 +173,62 @@ def mail_page_action(request):
     return JsonResponse(context)
 
 
-def get_mails_pictures(mails):
+def get_weibo_pictures(weibos):
     res = []
-    for mail in mails:
-        res.extend([pic for pic in WeiboPicture.objects.filter(weibo=mail)])
+    for weibo in weibos:
+        res.extend([pic for pic in WeiboPicture.objects.filter(weibo=weibo)])
     return res
+
+
+def blog_action(request, order):
+    context = {}
+    if str(order) == 'old':
+        blogs = Weibo.objects.filter(is_blog=True).order_by('created_at')
+        context['old'] = True
+    else:
+        blogs = Weibo.objects.filter(is_blog=True).order_by('-created_at')
+        context['old'] = False
+    blogs_paginator = Paginator(blogs, blogs_per_page)
+
+    blog_page_num = 1
+    context['blogs'] = blogs_paginator.get_page(blog_page_num).object_list
+    context['page_num'] = 1
+    return render(request=request, template_name='yodachannel/blog.html', context=context)
+
+
+def blog_page_action(request):
+    context = {}
+    order = str(request.GET.get('order'))
+    if order == 'old':
+        blogs = Weibo.objects.filter(is_blog=True).order_by('created_at')
+    else:
+        blogs = Weibo.objects.filter(is_blog=True).order_by('-created_at')
+    blogs_paginator = Paginator(blogs, blogs_per_page)
+    blog_page_num = int(request.GET.get('page_num'))
+
+    context['status'] = 'SUCCESS'
+    if type(blog_page_num) is not int:
+        blog_page_num = 1
+        context['status'] = 'FAIL'
+    else:
+        blog_page_num += 1
+    blogs_list = [blog for blog in blogs_paginator.get_page(blog_page_num).object_list]
+    context['blogs'] = [serializers.serialize('json', [blog, ]) for blog in blogs_list]
+    context['new_page_num'] = blog_page_num
+
+    # 判断是否有下一页数据
+    if blogs_paginator.get_page(blog_page_num).has_next():
+        context['has_next'] = 'true'
+    else:
+        context['has_next'] = 'false'
+    return JsonResponse(context)
+
+
+def blog_view_action(request, blog_id):
+    context = {}
+    if type(blog_id) is int:
+        blog = [Weibo.objects.get(id=blog_id)]
+        context['blog_pictures'] = get_weibo_pictures(blog)
+        if blog and blog[0].blog_title:
+            context['blog_title'] = blog[0].blog_title
+    return render(request=request, template_name='yodachannel/blog_view.html', context=context)

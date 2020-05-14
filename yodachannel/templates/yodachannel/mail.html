@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <div class="mails-container">
+    <div class="blogs-container">
         {% for mail in mails %}
             <div class="mail-container">
                 <a>
@@ -48,11 +48,11 @@
                             <div class="mail-title inline">
                                 {{ mail.mail_title }}
                             </div>
-                            <div class="mail-info mail-date inline">
+                            <div class="blog-info mail-date inline">
                                 {{ mail.created_at | date:"Y/m/d" }}
                             </div>
                         </div>
-                        <div class="mail-info weibo-cat inline">
+                        <div class="blog-info weibo-cat inline">
                             Mail
                         </div>
                     </div>

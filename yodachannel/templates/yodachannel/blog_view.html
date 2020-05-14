@@ -1,0 +1,26 @@
+{% extends 'yodachannel/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>博客-{{ blog_title }} | Yoda Channel</title>
+{% endblock %}
+
+{% block css %}
+    <link href="{% static 'yodachannel/css/blog_view.css' %}?{% now 'U' %}" rel="stylesheet">
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'yodachannel/js/blog_view.js'%}?{% now 'U' %}"></script>
+{% endblock %}
+
+{% block contents %}
+
+    <div class="blog-pictures-container">
+        {% for blog_picture in blog_pictures %}
+            <div class="blog-picture-container">
+                <img class="mail-picture" src="{% static 'yodachannel/images/weibo/' %}{{ blog_picture.file_name }}">
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

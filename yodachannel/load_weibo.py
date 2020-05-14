@@ -43,9 +43,18 @@ def create_weibo(weibo):
     if check_mail(new_weibo, weibo):
         parse_mail(new_weibo, weibo)
     elif check_blog(new_weibo, weibo):
-        pass
+        parse_blog(new_weibo, weibo)
     else:
         new_weibo.is_other = True
+
+
+def parse_blog(new_weibo, weibo):
+    paresd_blog = weibo['text'].lower()
+    if '「' and '」' in paresd_blog:
+        new_weibo.blog_title = paresd_blog[paresd_blog.index('「'):paresd_blog.rindex('」') + 1]
+    else:
+        new_weibo.blog_title = '「無題」'
+    new_weibo.save()
 
 
 def parse_mail(new_weibo, weibo):
@@ -91,8 +100,9 @@ def check_mail(new_weibo, weibo):
 
 
 def check_blog(new_weibo, weibo):
-    if '博客' not in weibo['source'] and '博客' not in weibo['topics'] and '博客#' not in weibo['text']:
-        if 'blog' not in weibo['text'] or ('blog' in weibo['text'] and 'via' in weibo['text']):
+    lo = weibo['text'].lower()
+    if '博客' not in weibo['source'] and '博客' not in weibo['topics'] and '博客#' not in lo:
+        if 'blog' not in lo or ('blog' in lo and 'via' in lo):
             return False
     new_weibo.is_blog = True
     new_weibo.save()

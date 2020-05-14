@@ -25,6 +25,7 @@ class Weibo(models.Model):
     is_other = models.BooleanField(default=False)
     mail_title = models.TextField(blank=True)
     mail_text = models.TextField(blank=True)
+    blog_title = models.TextField(blank=True)
 
     def __str__(self):
         return '[weibo_id: {}, user_id: {}, screen_name: {}, text: {}, pics: {}, video_url: {}, created_at: {}]'.format(
