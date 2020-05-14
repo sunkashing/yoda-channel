@@ -7,10 +7,12 @@
 
 {% block css %}
     <link href="{% static 'yodachannel/css/mail.css' %}?{% now 'U' %}" rel="stylesheet">
+    <link href="{% static 'yodachannel/css/image_window.css' %}?{% now 'U' %}" rel="stylesheet">
 {% endblock %}
 
 {% block js %}
     <script src="{% static 'yodachannel/js/mail.js'%}?{% now 'U' %}"></script>
+    <script src="{% static 'yodachannel/js/image_window.js'%}?{% now 'U' %}"></script>
 {% endblock %}
 
 {% block contents %}
@@ -67,7 +69,7 @@
                         {% for pic in mails_pictures %}
                             {% if pic.weibo_id == mail.id %}
                                 <div class="mail-picture_container inline">
-                                    <img src="{% static 'yodachannel/images/weibo/' %}{{ pic.file_name }}">
+                                    <img class="mail-picture" src="{% static 'yodachannel/images/weibo/' %}{{ pic.file_name }}">
                                 </div>
                             {% endif %}
                         {% endfor %}
@@ -75,6 +77,17 @@
                 {% endif %}
             </div>
         {% endfor %}
+    </div>
+
+
+    <!-- 弹窗 -->
+    <div id="myModal" class="modal">
+
+        <!-- 弹窗内容 -->
+        <img class="modal-content" id="img01">
+        <!-- 关闭按钮 -->
+        <div class="close-image" onclick="document.getElementById('myModal').style.display='none'">&times;</div>
+
     </div>
 
     <input id="hidden-page-num" type="hidden" value="{{ page_num }}">

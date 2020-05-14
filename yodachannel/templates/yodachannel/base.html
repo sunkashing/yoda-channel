@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="{% static 'yodachannel/css/app.css' %}?{% now 'U' %}">
         <link rel="stylesheet" href="{% static 'yodachannel/css/base.css' %}?{% now 'U' %}">
         <link rel="stylesheet" href="{% static 'yodachannel/css/theme.css' %}?{% now 'U' %}">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{#        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">#}
         <script src="{% static 'yodachannel/js/jquery-2.1.4.js' %}" type="text/javascript"></script>
         <script src="{% static 'yodachannel/js/app.js'%}?{% now 'U' %}"></script>
         <script src="{% static 'yodachannel/js/theme.js'%}?{% now 'U' %}"></script>
@@ -26,13 +26,12 @@
     </head>
 
     <body style="padding-top: 0">
-        {#<div id="fb-root"></div>#}
         <div style="background-image: url('{% static 'yodachannel/images/yoda_header_blur.png' %}'); height: 400px; padding: 0 150px 260px 150px;">
             <nav class="navbar navbar-expand-lg navbar-light fixed-top">
                 <div class="website-info">
-                    <h1 class="logo">
+                    <h1 class="logo" style="margin-bottom: 0">
                         <a href="{% url 'index' %}">
-                            <div>
+                            <div class="yoda-logo-container">
                                 <div style="height: 58px; width: 82px; display: inline-block; vertical-align: bottom">
                                     <object data="{% static 'yodachannel/images/yodachannel_logo_82x58.svg' %}" type="image/svg+xml"></object>
                                 </div>

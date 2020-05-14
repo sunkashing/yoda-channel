@@ -49,9 +49,11 @@ function update(data) {
             let new_mail_html = build_html(mail, mail_pictures);
             $('.mails-container').append(new_mail_html);
         });
+        image_window();
         if (data.has_next === 'true') {
             $('#hidden-page-num').val(data.new_page_num);
         } else {
+            $('.mails-container').append('<div style="text-align: center; color: black; font-weight: bold">已加载全部</div>');
             $('#hidden-page-num').val('#');
         }
     }
@@ -89,7 +91,7 @@ function build_html(mail, mail_pictures) {
                     '<div class="mail-pictures-container">';
         mail_pictures.forEach(function (mail_picture, index, array) {
             new_html += '<div class="mail-picture_container inline">' +
-                            '<img src="/static/yodachannel/images/weibo/' + mail_picture[0].fields.file_name + '">' +
+                            '<img class="mail-picture" src="/static/yodachannel/images/weibo/' + mail_picture[0].fields.file_name + '">' +
                         '</div>';
         });
         new_html += '</div>';

@@ -72,9 +72,13 @@
 }
 
 .mail-picture_container {
- padding: 15px 20px;
- width: 300px;
- height: auto;
+    margin: 15px 20px;
+    width: 300px;
+    height: auto;
+}
+
+.mail-picture {
+    border-radius: 15px;
 }
 
 .side-bar {
@@ -82,7 +86,7 @@
     width: 100px;
     position: fixed;
     top: 450px;
-    right: 50px;
+    right: 70px;
     background-color: #2f365a;
     border-radius: 15px;
     box-shadow: 0 3px 4px rgba(0,0,0,0.5);
