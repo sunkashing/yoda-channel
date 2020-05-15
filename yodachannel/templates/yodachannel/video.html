@@ -8,17 +8,41 @@
 {% block css %}
     <link href="{% static 'yodachannel/css/video.css' %}?{% now 'U' %}" rel="stylesheet">
     <link href="{% static 'yodachannel/css/video_window.css' %}?{% now 'U' %}" rel="stylesheet">
+    <link href="{% static 'yodachannel/css/side_bar.css' %}?{% now 'U' %}" rel="stylesheet">
 {% endblock %}
 
 {% block js %}
     <script src="{% static 'yodachannel/js/video_window.js'%}?{% now 'U' %}"></script>
+    <script src="{% static 'yodachannel/js/video.js'%}?{% now 'U' %}"></script>
 {% endblock %}
 
 {% block contents %}
 
+        <div class="side-bar">
+            <div class="side-bar-content-container">
+                {% if old %}
+                    <a href="{% url 'blog' 'new' %}" class="side-bar-no-active">
+                        最新
+                    </a>
+                    <hr>
+                    <a href="{% url 'blog' 'old' %}" class="side-bar-active">
+                        最旧
+                    </a>
+                {% else %}
+                    <a href="{% url 'blog' 'new' %}" class="side-bar-active">
+                        最新
+                    </a>
+                    <hr>
+                    <a href="{% url 'blog' 'old' %}" class="side-bar-no-active">
+                        最旧
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
     <div class="videos-container">
         {% for video in videos %}
-            <div class="video-container">
+            <a class="video-container">
                 <div class="video-picture-container">
                     {% for v in videos_video %}
                         {% if v.weibo_id == video.id %}
@@ -29,7 +53,7 @@
                 <div class="video-title-container">
                     {{ video.video_title }}
                 </div>
-            </div>
+            </a>
         {% endfor %}
     </div>
 

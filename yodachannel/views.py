@@ -57,9 +57,7 @@ class APIView(View):
                                         queryset=queryset)
         else:
             serialized_data = None
-        # 这一步很重要，在经过上面的查询步骤之后， serialized_data 已经是一个字符串
-        # 我们最终需要把它放入 JsonResponse 中，JsonResponse 只接受 python 数据类型
-        # 所以我们需要先把得到的 json 字符串转化为 python 数据结构。
+
         instances = json.loads(serialized_data) if serialized_data else 'No instance'
         data = {'instances': instances}
         data.update(kwargs)  # 添加其他的字段
@@ -75,7 +73,7 @@ class APICodeView(APIListMixin,  # 获取列表
                   APIView):  # 记得在最后继承 APIView
     model = None
 
-    def list(self):  # 这里仅仅是简单的给父类的 list 函数传参。
+    def list(self):
         return super(APICodeView, self).list(fields=['name'])
 
 
@@ -266,8 +264,33 @@ def video_action(request, order):
     return render(request=request, template_name='yodachannel/video.html', context=context)
 
 
-def video_view_action(request):
-    return None
+def video_page_action(request):
+    context = {}
+    order = str(request.GET.get('order'))
+    if order == 'old':
+        videos = Weibo.objects.filter(is_video=True).order_by('created_at')
+    else:
+        videos = Weibo.objects.filter(is_video=True).order_by('-created_at')
+    videos_paginator = Paginator(videos, videos_per_page)
+    video_page_num = int(request.GET.get('page_num'))
+
+    context['status'] = 'SUCCESS'
+    if type(video_page_num) is not int:
+        video_page_num = 1
+        context['status'] = 'FAIL'
+    else:
+        video_page_num += 1
+    videos_list = [video for video in videos_paginator.get_page(video_page_num).object_list]
+    context['videos'] = [serializers.serialize('json', [video, ]) for video in videos_list]
+    context['videos_video'] = [serializers.serialize('json', [video, ]) for video in get_weibo_videos(videos_list)]
+    context['new_page_num'] = video_page_num
+
+    # 判断是否有下一页数据
+    if videos_paginator.get_page(video_page_num).has_next():
+        context['has_next'] = 'true'
+    else:
+        context['has_next'] = 'false'
+    return JsonResponse(context)
 
 
 def file_iterator(file_name, chunk_size=8192, offset=0, length=None):
@@ -285,7 +308,6 @@ def file_iterator(file_name, chunk_size=8192, offset=0, length=None):
 
 
 def get_video_action(request, path):
-    """将视频文件以流媒体的方式响应"""
     path = os.path.join(os.path.join(settings.STATICFILES_DIR, 'yodachannel/videos/weibo/'), path)
     range_header = request.META.get('HTTP_RANGE', '').strip()
     range_re = re.compile(r'bytes\s*=\s*(\d+)\s*-\s*(\d*)', re.I)
@@ -296,7 +318,7 @@ def get_video_action(request, path):
     if range_match:
         first_byte, last_byte = range_match.groups()
         first_byte = int(first_byte) if first_byte else 0
-        last_byte = first_byte + 1024 * 1024 * 8       # 8M 每片,响应体最大体积
+        last_byte = first_byte + 1024 * 1024 * 8
         if last_byte >= size:
             last_byte = size - 1
         length = last_byte - first_byte + 1
@@ -304,8 +326,8 @@ def get_video_action(request, path):
         resp['Content-Length'] = str(length)
         resp['Content-Range'] = 'bytes %s-%s/%s' % (first_byte, last_byte, size)
     else:
-        # 不是以视频流方式的获取时，以生成器方式返回整个文件，节省内存
         resp = StreamingHttpResponse(FileWrapper(open(path, 'rb')), content_type=content_type)
         resp['Content-Length'] = str(size)
     resp['Accept-Ranges'] = 'bytes'
     return resp
+

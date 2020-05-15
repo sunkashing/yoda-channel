@@ -1,0 +1,24 @@
+.side-bar {
+    height: auto;
+    width: 100px;
+    position: fixed;
+    top: 450px;
+    right: 70px;
+    background-color: #2f365a;
+    border-radius: 15px;
+    box-shadow: 0 3px 4px rgba(0,0,0,0.5);
+}
+
+.side-bar-content-container {
+    padding: 20px 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+.side-bar-content-container a {
+    color: white;
+}
+
+.side-bar-no-active {
+    opacity: 50%;
+}

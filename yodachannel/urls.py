@@ -11,6 +11,7 @@ urlpatterns = [
     path('blog_page', views.blog_page_action, name='blog_page'),
     path('blog_view/<int:blog_id>', views.blog_view_action, name='blog_view'),
     path('video/<str:order>', views.video_action, name='video'),
+    path('video_page', views.video_page_action, name='video_page'),
     path('video_view/<str:path>', views.get_video_action, name='video_view'),
 
 ]
