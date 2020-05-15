@@ -9,9 +9,10 @@ function image_window() {
 
     // 获取图片插入到弹窗 - 使用 "alt" 属性作为文本部分的内容
     let modalImg = document.getElementById("img01");
+    let navBar = document.getElementById("navBar");
     $('.mail-picture').click(function () {
-        console.log("img clicked.");
         modal.style.display = "block";
+        navBar.style.display = "none";
         modalImg.src = $(this).attr('src');
     });
 
@@ -21,5 +22,6 @@ function image_window() {
     // 当点击 (x), 关闭弹窗
     span.onclick = function () {
         modal.style.display = "none";
+        navBar.style.display = "flex";
     };
 }

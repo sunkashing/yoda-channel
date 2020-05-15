@@ -41,20 +41,20 @@
         {% for blog in blogs %}
             <a href="{% url 'blog_view' blog.id %}">
                 <div class="blog-container">
-                <div class="blog-title-container">
-                    <div class="inline">
-                        <div class="blog-title inline">
-                            {{ blog.blog_title }}
+                    <div class="blog-title-container">
+                        <div class="inline">
+                            <div class="blog-title inline">
+                                {{ blog.blog_title }}
+                            </div>
+                            <div class="blog-info blog-date inline">
+                                {{ blog.created_at | date:"Y/m/d" }}
+                            </div>
                         </div>
-                        <div class="blog-info blog-date inline">
-                            {{ blog.created_at | date:"Y/m/d" }}
+                        <div class="blog-info weibo-cat inline">
+                            Blog
                         </div>
-                    </div>
-                    <div class="blog-info weibo-cat inline">
-                        Blog
                     </div>
                 </div>
-            </div>
             </a>
         {% endfor %}
     </div>

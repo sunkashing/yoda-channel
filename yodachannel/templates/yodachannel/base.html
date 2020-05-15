@@ -27,7 +27,7 @@
 
     <body style="padding-top: 0">
         <div style="background-image: url('{% static 'yodachannel/images/yoda_header_blur.png' %}'); height: 400px; padding: 0 150px 260px 150px;">
-            <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="navBar">
                 <div class="website-info">
                     <h1 class="logo" style="margin-bottom: 0">
                         <a href="{% url 'index' %}">
@@ -128,24 +128,28 @@
                             </div>
                         </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Yoda 视频
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">
-                                <span class="dropdown-item">
-                                    <a href="{% url 'index' %}" class="d-block">
-                                        <i class="material-icons prefix">live_tv</i>
-                                        <span class="in-line-span">综艺</span>
-                                    </a>
-                                    <hr>
-                                    <a href="{% url 'index' %}" class="d-block">
-                                        <i class="material-icons prefix">accessibility_new</i>
-                                        <span class="in-line-span">日常</span>
-                                    </a>
-                                </span>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'video' 'new' %}">Yoda 视频</a>
                         </li>
+
+{#                        <li class="nav-item dropdown">#}
+{#                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                Yoda 视频#}
+{#                            </a>#}
+{#                            <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">#}
+{#                                <span class="dropdown-item">#}
+{#                                    <a href="{% url 'index' %}" class="d-block">#}
+{#                                        <i class="material-icons prefix">live_tv</i>#}
+{#                                        <span class="in-line-span">综艺</span>#}
+{#                                    </a>#}
+{#                                    <hr>#}
+{#                                    <a href="{% url 'index' %}" class="d-block">#}
+{#                                        <i class="material-icons prefix">accessibility_new</i>#}
+{#                                        <span class="in-line-span">日常</span>#}
+{#                                    </a>#}
+{#                                </span>#}
+{#                            </div>#}
+{#                        </li>#}
 
                         <li class="nav-item dropdown">
                             <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

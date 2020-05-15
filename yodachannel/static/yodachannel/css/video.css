@@ -1,0 +1,28 @@
+.videos-container {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.video-container {
+    width: 250px;
+    display: inline-block;
+    vertical-align: top;
+    margin: 30px 35px;
+    border-radius: 20px;
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+    background-color: rgb(34, 44, 57);
+}
+
+.video-container:hover {
+    transform: translate(15px, -15px);
+    transition: transform 0.5s;
+}
+
+.video-picture {
+    border-radius: 20px 20px 0 0;
+}
+
+.video-title-container {
+    color: white;
+    padding: 15px;
+}

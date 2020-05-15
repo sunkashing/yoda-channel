@@ -3,12 +3,12 @@ import sys
 import traceback
 from datetime import datetime
 
-import pytz
 import requests
 from requests.adapters import HTTPAdapter
 
 from webapps import settings
-from yodachannel.models import Weibo, WeiboPicture
+from yodachannel.get_frame import get_frame_from_video
+from yodachannel.models import Weibo, WeiboPicture, WeiboVideo
 import json
 
 
@@ -39,13 +39,25 @@ def create_weibo(weibo):
                       at_users=weibo['at_users'])
     new_weibo.save()
     download_pictures(new_weibo, weibo)
-    # download_videos(new_weibo, weibo)
+    download_videos(new_weibo, weibo)
     if check_mail(new_weibo, weibo):
         parse_mail(new_weibo, weibo)
     elif check_blog(new_weibo, weibo):
         parse_blog(new_weibo, weibo)
+    elif check_video(new_weibo, weibo):
+        parse_video(new_weibo, weibo)
     else:
         new_weibo.is_other = True
+        new_weibo.save()
+
+
+def parse_video(new_weibo, weibo):
+    video_text = weibo['text']
+    if '超话' in video_text:
+        new_weibo.video_title = video_text[video_text.rindex('超话') + 2:].strip(' ')
+    else:
+        new_weibo.video_title = video_text.strip(' ')
+    new_weibo.save()
 
 
 def parse_blog(new_weibo, weibo):
@@ -91,6 +103,14 @@ def parse_mail(new_weibo, weibo):
     new_weibo.save()
 
 
+def check_video(new_weibo, weibo):
+    if weibo['video_url'].strip(' ') != '':
+        new_weibo.is_video = True
+        new_weibo.save()
+        return True
+    return False
+
+
 def check_mail(new_weibo, weibo):
     if '手机博' in weibo['source'] or '手机博' in weibo['topics'] or '手机博#' in weibo['text']:
         new_weibo.is_mail = True
@@ -128,18 +148,28 @@ def download_pictures(new_weibo, weibo):
         new_weibo_picture.save()
 
 
-# def download_videos(new_weibo, weibo):
-#     videos = weibo['video_url'].split(',')
-#     for i, picture in enumerate(pictures):
-#         file_path = os.path.join(
-#             os.path.join(
-#                 settings.STATICFILES_DIR, 'yodachannel/images/weibo/'), weibo['id'] + '_' + str(i + 1) + '.jpg')
-#         if not download_one_file(picture, file_path):
-#             continue
-#         new_weibo_picture = WeiboPicture(weibo=new_weibo,
-#                                          url=picture,
-#                                          file_path=file_path)
-#         new_weibo_picture.save()
+def download_videos(new_weibo, weibo):
+    videos = [weibo['video_url'].strip(' ')]
+    for i, video in enumerate(videos):
+        if video is '':
+            continue
+        file_name = new_weibo.created_at.strftime('%Y%m%d') + '_' + str(weibo['id']) + '.mp4'
+        file_path = os.path.join(
+            os.path.join(
+                settings.STATICFILES_DIR, 'yodachannel/videos/weibo/'), file_name)
+        if not download_one_file(video, file_path):
+            continue
+        new_weibo_video = WeiboVideo(weibo=new_weibo,
+                                     url=video,
+                                     file_name=file_name)
+
+        picture_file_name = new_weibo.created_at.strftime('%Y%m%d') + '_' + str(weibo['id']) + '.jpg'
+        get_frame_from_video(file_path,
+                             1,
+                             os.path.join(settings.STATICFILES_DIR, 'yodachannel/videos/weibo/images/'),
+                             picture_file_name)
+        new_weibo_video.picture_file_name = picture_file_name
+        new_weibo_video.save()
 
 
 def download_one_file(url, file_path):
@@ -156,3 +186,5 @@ def download_one_file(url, file_path):
         traceback.print_exc()
         return False
     return True
+
+

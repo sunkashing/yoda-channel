@@ -22,10 +22,12 @@ class Weibo(models.Model):
     at_users = models.TextField()
     is_mail = models.BooleanField(default=False)
     is_blog = models.BooleanField(default=False)
+    is_video = models.BooleanField(default=False)
     is_other = models.BooleanField(default=False)
     mail_title = models.TextField(blank=True)
     mail_text = models.TextField(blank=True)
     blog_title = models.TextField(blank=True)
+    video_title = models.TextField(blank=True)
 
     def __str__(self):
         return '[weibo_id: {}, user_id: {}, screen_name: {}, text: {}, pics: {}, video_url: {}, created_at: {}]'.format(
@@ -42,3 +44,4 @@ class WeiboVideo(models.Model):
     weibo = models.ForeignKey(Weibo, related_name='video', on_delete=models.PROTECT, blank=True)
     url = models.TextField()
     file_name = models.TextField()
+    picture_file_name = models.TextField()

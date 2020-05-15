@@ -1,0 +1,50 @@
+{% extends 'yodachannel/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>视频 | Yoda Channel</title>
+{% endblock %}
+
+{% block css %}
+    <link href="{% static 'yodachannel/css/video.css' %}?{% now 'U' %}" rel="stylesheet">
+    <link href="{% static 'yodachannel/css/video_window.css' %}?{% now 'U' %}" rel="stylesheet">
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'yodachannel/js/video_window.js'%}?{% now 'U' %}"></script>
+{% endblock %}
+
+{% block contents %}
+
+    <div class="videos-container">
+        {% for video in videos %}
+            <div class="video-container">
+                <div class="video-picture-container">
+                    {% for v in videos_video %}
+                        {% if v.weibo_id == video.id %}
+                            <img class="video-picture" src="{% static 'yodachannel/videos/weibo/images/' %}{{ v.picture_file_name }}">
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="video-title-container">
+                    {{ video.video_title }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- 弹窗 -->
+    <div id="myModal" class="modal">
+
+        <!-- 弹窗内容 -->
+        <video class="modal-content" id="video01" controls autoplay>
+            <source type="video/mp4">
+        </video>
+        <!-- 关闭按钮 -->
+        <div class="close-video" onclick="document.getElementById('myModal').style.display='none'">&times;</div>
+
+    </div>
+
+    <input id="hidden-page-num" type="hidden" value="{{ page_num }}">
+
+{% endblock %}
