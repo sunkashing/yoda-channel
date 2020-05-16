@@ -19,6 +19,8 @@ from lxml import etree
 from requests.adapters import HTTPAdapter
 from tqdm import tqdm
 
+from yodachannel.get_weibo_cookie import get_cookie
+
 
 class Weibo(object):
     def __init__(self, config):
@@ -40,7 +42,8 @@ class Weibo(object):
             'original_video_download']  # 取值范围为0、1, 0代表不下载原创微博视频,1代表下载
         self.retweet_video_download = config[
             'retweet_video_download']  # 取值范围为0、1, 0代表不下载转发微博视频,1代表下载
-        self.cookie = {'Cookie': config.get('cookie')}  # 微博cookie，可填可不填
+        # self.cookie = {'Cookie': config.get('cookie')}  # 微博cookie，可填可不填
+        self.cookie = get_cookie()
         self.mysql_config = config.get('mysql_config')  # MySQL数据库连接配置，可以不填
         user_id_list = config['user_id_list']
         if not isinstance(user_id_list, list):

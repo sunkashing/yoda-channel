@@ -8,3 +8,4 @@ yodachannel/media/
 .env
 yodachannel/static/yodachannel/images/weibo/
 yodachannel/static/yodachannel/videos/weibo/
+yodachannel/cookies/

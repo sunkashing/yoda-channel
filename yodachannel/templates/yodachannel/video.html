@@ -1,5 +1,6 @@
 {% extends 'yodachannel/base.html' %}
 {% load static %}
+{% load previous_next %}
 
 {% block title %}
     <title>视频 | Yoda Channel</title>
@@ -42,11 +43,31 @@
 
     <div class="videos-container">
         {% for video in videos %}
+            {% with previous_element=videos|previous:forloop.counter0 %}
+                {% if previous_element %}
+                    {% with is_same=previous_element.created_at|is_same_month:video.created_at %}
+                        {% if not is_same %}
+                            <hr/>
+                            <div class="timeline">
+                                {{ video.created_at | date:"Y.m" }}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                {% else %}
+                        {% if forloop.first %}
+                            <div class="timeline">
+                                {{ video.created_at | date:"Y.m" }}
+                            </div>
+                        {% endif %}
+                {% endif %}
+            {% endwith %}
+
             <a class="video-container">
                 <div class="video-picture-container">
                     {% for v in videos_video %}
                         {% if v.weibo_id == video.id %}
                             <img class="video-picture" src="{% static 'yodachannel/videos/weibo/images/' %}{{ v.picture_file_name }}">
+                            <input type="hidden" class="video-date" value="{{ video.created_at | date:"Y/m/d" }}">
                         {% endif %}
                     {% endfor %}
                 </div>

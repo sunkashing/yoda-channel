@@ -47,7 +47,8 @@ function update(data) {
                     video_pictures.push(videos_picture)
                 }
             });
-            let new_video_html = build_html(video, video_pictures);
+            let prev_video_date = $('.video-date').last().val();
+            let new_video_html = build_html(video, video_pictures, prev_video_date);
             $('.videos-container').append(new_video_html);
         });
         video_window();
@@ -61,12 +62,20 @@ function update(data) {
 }
 
 
-function build_html(video, video_pictures) {
-    let new_html = '<a class="video-container">' +
+function build_html(video, video_pictures, prev_video_date) {
+    let new_html = '';
+    if (!is_same_month(prev_video_date, video[0].fields.created_at)) {
+        new_html += '<hr/>' +
+                    '<div class="timeline">' +
+                        parse_timeline_time(video[0].fields.created_at) +
+                    '</div>';
+    }
+    new_html += '<a class="video-container">' +
                         '<div class="video-picture-container">';
     if (video_pictures.length > 0) {
         video_pictures.forEach(function (video_picture, index, array) {
-            new_html += '<img class="video-picture" src="/static/yodachannel/videos/weibo/images/' + video_picture[0].fields.picture_file_name + '">';
+            new_html += '<img class="video-picture" src="/static/yodachannel/videos/weibo/images/' + video_picture[0].fields.picture_file_name + '">' +
+                            '<input type="hidden" class="video-date" value="' + video[0].fields.created_at+ '">'
         });
     }
     new_html += '</div>' +
@@ -84,6 +93,21 @@ function parse_time(time) {
     let yyyy = date_time.getFullYear();
     let hh = date_time.getHours();
     return yyyy + '/' + mm + '/' + dd
+}
+
+function parse_timeline_time(time) {
+    let date_time = new Date(time);
+    let mm = date_time.getMonth() + 1;
+    let yyyy = date_time.getFullYear();
+    return yyyy + '.' + mm;
+}
+
+function is_same_month(prev, curr) {
+    let prev_date = new Date(prev);
+    let curr_date = new Date(curr);
+    console.log(prev_date, curr_date);
+    console.log(prev_date.getFullYear() === curr_date.getFullYear() && (prev_date.getMonth() === curr_date.getMonth()));
+    return prev_date.getFullYear() === curr_date.getFullYear() && (prev_date.getMonth() === curr_date.getMonth());
 }
 
 window.onscroll = scrollBottomOrTop;

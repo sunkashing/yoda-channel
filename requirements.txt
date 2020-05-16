@@ -1,7 +1,7 @@
+selenium
 opencv-python
 django==3.0.6
 django-haystack==3.0b1
-whoosh
 django-environ
 lxml==4.3.4
 requests==2.22.0
