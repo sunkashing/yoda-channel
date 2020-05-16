@@ -80,3 +80,12 @@
 .mail-picture {
     border-radius: 15px;
 }
+
+.timeline {
+    font-size: 30px;
+    margin-left: -200px;
+    padding-left: 10px;
+    border-left: 2px solid red;
+    font-weight: bold;
+    font-family: Arial;
+}

@@ -1,5 +1,6 @@
 {% extends 'yodachannel/base.html' %}
 {% load static %}
+{% load previous_next %}
 
 {% block title %}
     <title>手机博 | Yoda Channel</title>
@@ -42,6 +43,24 @@
 
     <div class="blogs-container">
         {% for mail in mails %}
+            {% with previous_element=mails|previous:forloop.counter0 %}
+                {% if previous_element %}
+                    {% with is_same=previous_element.created_at|is_same_month:mail.created_at %}
+                        {% if not is_same %}
+                            <hr/>
+                            <div class="timeline">
+                                {{ mail.created_at | date:"Y.m" }}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                {% else %}
+                        {% if forloop.first %}
+                            <div class="timeline">
+                                {{ mail.created_at | date:"Y.m" }}
+                            </div>
+                        {% endif %}
+                {% endif %}
+            {% endwith %}
             <div class="mail-container">
                 <a>
                     <div class="mail-title-container">

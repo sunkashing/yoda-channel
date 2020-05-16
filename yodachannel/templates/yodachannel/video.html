@@ -21,19 +21,19 @@
         <div class="side-bar">
             <div class="side-bar-content-container">
                 {% if old %}
-                    <a href="{% url 'blog' 'new' %}" class="side-bar-no-active">
+                    <a href="{% url 'video' 'new' %}" class="side-bar-no-active">
                         最新
                     </a>
                     <hr>
-                    <a href="{% url 'blog' 'old' %}" class="side-bar-active">
+                    <a href="{% url 'video' 'old' %}" class="side-bar-active">
                         最旧
                     </a>
                 {% else %}
-                    <a href="{% url 'blog' 'new' %}" class="side-bar-active">
+                    <a href="{% url 'video' 'new' %}" class="side-bar-active">
                         最新
                     </a>
                     <hr>
-                    <a href="{% url 'blog' 'old' %}" class="side-bar-no-active">
+                    <a href="{% url 'video' 'old' %}" class="side-bar-no-active">
                         最旧
                     </a>
                 {% endif %}

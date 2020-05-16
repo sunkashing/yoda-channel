@@ -36,7 +36,8 @@ function update(data) {
     if (data.status === 'SUCCESS') {
         // 循环遍历数据并增加到前端页面
         blogs.forEach(function (blog, index, array) {
-            let new_blog_html = build_html(blog);
+            let prev_blog_date = $('.blog-date').last().text();
+            let new_blog_html = build_html(blog, prev_blog_date);
             $('.blogs-container').append(new_blog_html);
         });
         if (data.has_next === 'true') {
@@ -49,8 +50,15 @@ function update(data) {
 }
 
 
-function build_html(blog) {
-    let new_html = '<a href="/yodachannel/blog_view/' + blog[0].pk + '">' +
+function build_html(blog, prev_blog_date) {
+    let new_html = '';
+    if (!is_same_month(prev_blog_date, blog[0].fields.created_at)) {
+        new_html += '<hr/>' +
+                    '<div class="timeline">' +
+                        parse_timeline_time(blog[0].fields.created_at) +
+                    '</div>';
+    }
+    new_html += '<a href="/yodachannel/blog_view/' + blog[0].pk + '">' +
                         '<div class="blog-container">' +
                             '<div class="blog-title-container">' +
                                 '<div class="inline">' +
@@ -70,7 +78,6 @@ function build_html(blog) {
     return new_html
 }
 
-
 function parse_time(time) {
     let date_time = new Date(time);
     let dd = date_time.getDate();
@@ -78,6 +85,21 @@ function parse_time(time) {
     let yyyy = date_time.getFullYear();
     let hh = date_time.getHours();
     return yyyy + '/' + mm + '/' + dd
+}
+
+function parse_timeline_time(time) {
+    let date_time = new Date(time);
+    let mm = date_time.getMonth() + 1;
+    let yyyy = date_time.getFullYear();
+    return yyyy + '.' + mm;
+}
+
+function is_same_month(prev, curr) {
+    let prev_date = new Date(prev);
+    let curr_date = new Date(curr);
+    console.log(prev_date, curr_date);
+    console.log(prev_date.getFullYear() === curr_date.getFullYear() && (prev_date.getMonth() === curr_date.getMonth()));
+    return prev_date.getFullYear() === curr_date.getFullYear() && (prev_date.getMonth() === curr_date.getMonth());
 }
 
 window.onscroll = scrollBottomOrTop;

@@ -29,6 +29,8 @@
     width: auto;
     max-width: 700px;
     max-height: 600px;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.8); /* Black w/ opacity */
 }
 
 /* 文本内容 */

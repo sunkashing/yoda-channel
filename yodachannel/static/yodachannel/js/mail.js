@@ -46,7 +46,8 @@ function update(data) {
                     mail_pictures.push(mails_picture)
                 }
             });
-            let new_mail_html = build_html(mail, mail_pictures);
+            let prev_mail_date = $('.mail-date').last().text();
+            let new_mail_html = build_html(mail, mail_pictures, prev_mail_date);
             $('.blogs-container').append(new_mail_html);
         });
         image_window();
@@ -60,8 +61,16 @@ function update(data) {
 }
 
 
-function build_html(mail, mail_pictures) {
-    let new_html = '<div class="mail-container">' +
+function build_html(mail, mail_pictures, prev_mail_date) {
+    let new_html = '';
+    if (!is_same_month(prev_mail_date, mail[0].fields.created_at)) {
+        new_html += '<hr/>' +
+                    '<div class="timeline">' +
+                        parse_timeline_time(mail[0].fields.created_at) +
+                    '</div>';
+    }
+
+    new_html += '<div class="mail-container">' +
                 '<a>' +
                     '<div class="mail-title-container">' +
                         '<div class="inline">' +
@@ -94,7 +103,7 @@ function build_html(mail, mail_pictures) {
         new_html += '</div>';
     }
     new_html += '</div>';
-    return new_html
+    return new_html;
 }
 
 function parse_time(time) {
@@ -102,8 +111,22 @@ function parse_time(time) {
     let dd = date_time.getDate();
     let mm = date_time.getMonth() + 1;
     let yyyy = date_time.getFullYear();
-    let hh = date_time.getHours();
-    return yyyy + '/' + mm + '/' + dd
+    return yyyy + '/' + mm + '/' + dd;
+}
+
+function parse_timeline_time(time) {
+    let date_time = new Date(time);
+    let mm = date_time.getMonth() + 1;
+    let yyyy = date_time.getFullYear();
+    return yyyy + '.' + mm;
+}
+
+function is_same_month(prev, curr) {
+    let prev_date = new Date(prev);
+    let curr_date = new Date(curr);
+    console.log(prev_date, curr_date);
+    console.log(prev_date.getFullYear() === curr_date.getFullYear() && (prev_date.getMonth() === curr_date.getMonth()));
+    return prev_date.getFullYear() === curr_date.getFullYear() && (prev_date.getMonth() === curr_date.getMonth());
 }
 
 window.onscroll = scrollBottomOrTop;
