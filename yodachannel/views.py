@@ -35,6 +35,7 @@ consumer_secret = ''  # 设置你申请的appkey对于的secret
 mails_per_page = 5
 blogs_per_page = 5
 videos_per_page = 9
+pictures_per_page = 12
 
 
 class APIView(View):
@@ -340,20 +341,64 @@ def get_video_action(request, path):
     return resp
 
 
+def picture_action(request, order):
+    context = {}
+    if str(order) == 'old':
+        pictures = Weibo.objects.filter(Q(is_mail=True) or Q(is_yoda_other=True)).order_by('created_at')
+        context['old'] = True
+    else:
+        pictures = Weibo.objects.filter(Q(is_mail=True) or Q(is_yoda_other=True)).order_by('-created_at')
+        context['old'] = False
+    pictures_paginator = Paginator(pictures, pictures_per_page)
+
+    picture_page_num = 1
+    context['pictures'] = pictures_paginator.get_page(picture_page_num).object_list
+    context['pictures_picture'] = get_weibo_pictures(context['pictures'])
+    context['page_num'] = 1
+    return render(request=request, template_name='yodachannel/picture.html', context=context)
+
+
+def picture_page_action(request):
+    context = {}
+    order = str(request.GET.get('order'))
+    if order == 'old':
+        pictures = Weibo.objects.filter(Q(is_mail=True) or Q(is_yoda_other=True)).order_by('created_at')
+    else:
+        pictures = Weibo.objects.filter(Q(is_mail=True) or Q(is_yoda_other=True)).order_by('created_at')
+    pictures_paginator = Paginator(pictures, pictures_per_page)
+    picture_page_num = int(request.GET.get('page_num'))
+
+    context['status'] = 'SUCCESS'
+    if type(picture_page_num) is not int:
+        picture_page_num = 1
+        context['status'] = 'FAIL'
+    else:
+        picture_page_num += 1
+    pictures_list = [picture for picture in pictures_paginator.get_page(picture_page_num).object_list]
+    context['pictures'] = [serializers.serialize('json', [picture, ]) for picture in pictures_list]
+    context['pictures_picture'] = [serializers.serialize('json', [picture, ]) for picture in get_weibo_pictures(pictures_list)]
+    context['new_page_num'] = picture_page_num
+
+    # 判断是否有下一页数据
+    if pictures_paginator.get_page(picture_page_num).has_next():
+        context['has_next'] = 'true'
+    else:
+        context['has_next'] = 'false'
+    return JsonResponse(context)
+
+
+
 # 实例化调度器
 scheduler = BackgroundScheduler()
 # 调度器使用默认的DjangoJobStore()
 scheduler.add_jobstore(DjangoJobStore(), 'default')
 
 
-# 每天8点半执行这个任务
 @register_job(scheduler, "interval", seconds=60, id='test_job')
 def test():
     main()
     load_weibo(os.path.join(settings.BASE_DIR, 'yodachannel/weibo/yoda-channel/7452234433.json'), False)
     print('Refresh weibo successfully!')
 
-
-# 注册定时任务并开始
 register_events(scheduler)
 scheduler.start()

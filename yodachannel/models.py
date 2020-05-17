@@ -23,6 +23,7 @@ class Weibo(models.Model):
     is_mail = models.BooleanField(default=False)
     is_blog = models.BooleanField(default=False)
     is_video = models.BooleanField(default=False)
+    is_yoda_other = models.BooleanField(default=False)
     is_other = models.BooleanField(default=False)
     mail_title = models.TextField(blank=True)
     mail_text = models.TextField(blank=True)

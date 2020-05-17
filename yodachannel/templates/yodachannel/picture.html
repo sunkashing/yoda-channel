@@ -1,10 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'yodachannel/base.html' %}
+{% load static %}
+{% load previous_next %}
 
-</body>
-</html>
+{% block title %}
+    <title>图集 | Yoda Channel</title>
+{% endblock %}
+
+{% block css %}
+    <link href="{% static 'yodachannel/css/picture.css' %}?{% now 'U' %}" rel="stylesheet">
+    <link href="{% static 'yodachannel/css/image_window.css' %}?{% now 'U' %}" rel="stylesheet">
+    <link href="{% static 'yodachannel/css/side_bar.css' %}?{% now 'U' %}" rel="stylesheet">
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'yodachannel/js/picture_window.js'%}?{% now 'U' %}"></script>
+    <script src="{% static 'yodachannel/js/picture.js'%}?{% now 'U' %}"></script>
+{% endblock %}
+
+{% block contents %}
+
+        <div class="side-bar">
+            <div class="side-bar-content-container">
+                {% if old %}
+                    <a href="{% url 'picture' 'new' %}" class="side-bar-no-active">
+                        最新
+                    </a>
+                    <hr>
+                    <a href="{% url 'picture' 'old' %}" class="side-bar-active">
+                        最旧
+                    </a>
+                {% else %}
+                    <a href="{% url 'picture' 'new' %}" class="side-bar-active">
+                        最新
+                    </a>
+                    <hr>
+                    <a href="{% url 'picture' 'old' %}" class="side-bar-no-active">
+                        最旧
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+    <div class="pictures-container">
+        {% for picture in pictures %}
+            {% with previous_element=pictures|previous:forloop.counter0 %}
+                {% if previous_element %}
+                    {% with is_same=previous_element.created_at|is_same_month:picture.created_at %}
+                        {% if not is_same %}
+                            <hr/>
+                            <div class="timeline">
+                                {{ picture.created_at | date:"Y.m" }}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                {% else %}
+                        {% if forloop.first %}
+                            <div class="timeline">
+                                {{ picture.created_at | date:"Y.m" }}
+                            </div>
+                        {% endif %}
+                {% endif %}
+            {% endwith %}
+            {% for p in pictures_picture %}
+                {% if p.weibo_id == picture.id %}
+                    <a class="picture-container">
+                        <div class="picture-picture-container">
+                            <img class="picture-picture" src="{% static 'yodachannel/images/weibo/' %}{{ p.file_name }}">
+                            <input type="hidden" class="picture-date" value="{{ picture.created_at | date:"Y/m/d" }}">
+                        </div>
+                    </a>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <!-- 弹窗 -->
+    <div id="myModal" class="modal">
+
+
+        <img class="modal-content" id="img01">
+        <!-- 关闭按钮 -->
+        <div class="close-image" onclick="document.getElementById('myModal').style.display='none'">&times;</div>
+
+    </div>
+
+    <input id="hidden-page-num" type="hidden" value="{{ page_num }}">
+
+{% endblock %}

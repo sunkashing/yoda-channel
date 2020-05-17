@@ -1,0 +1,38 @@
+.pictures-container {
+    text-align: center;
+    margin: 40px -50px 0 -50px;
+}
+
+.picture-container {
+    width: 200px;
+    display: inline-block;
+    vertical-align: top;
+    margin: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+    background-color: rgb(34, 44, 57);
+}
+
+.picture-container:hover {
+    transform: translate(15px, -15px);
+    transition: transform 0.5s;
+}
+
+.picture-picture {
+    border-radius: 20px;
+}
+
+.picture-title-container {
+    color: white;
+    padding: 15px;
+}
+
+.timeline {
+    font-size: 30px;
+    margin-left: -80px;
+    padding-left: 10px;
+    border-left: 2px solid red;
+    font-weight: bold;
+    font-family: Arial, serif;
+    text-align: left;
+}

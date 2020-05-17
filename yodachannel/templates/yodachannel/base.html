@@ -109,24 +109,28 @@
                             </div>
                         </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Yoda 图集
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">
-                                <span class="dropdown-item">
-                                    <a href="{% url 'index' %}" class="d-block">
-                                        <i class="material-icons prefix">photo_camera</i>
-                                        <span class="in-line-span">写真集</span>
-                                    </a>
-                                    <hr>
-                                    <a href="{% url 'index' %}" class="d-block">
-                                        <i class="material-icons prefix">book</i>
-                                        <span class="in-line-span">杂志</span>
-                                    </a>
-                                </span>
-                            </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'picture' 'new' %}">Yoda 图集</a>
                         </li>
+                        
+{#                        <li class="nav-item dropdown">#}
+{#                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                Yoda 图集#}
+{#                            </a>#}
+{#                            <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">#}
+{#                                <span class="dropdown-item">#}
+{#                                    <a href="{% url 'index' %}" class="d-block">#}
+{#                                        <i class="material-icons prefix">photo_camera</i>#}
+{#                                        <span class="in-line-span">写真集</span>#}
+{#                                    </a>#}
+{#                                    <hr>#}
+{#                                    <a href="{% url 'index' %}" class="d-block">#}
+{#                                        <i class="material-icons prefix">book</i>#}
+{#                                        <span class="in-line-span">杂志</span>#}
+{#                                    </a>#}
+{#                                </span>#}
+{#                            </div>#}
+{#                        </li>#}
 
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'video' 'new' %}">Yoda 视频</a>

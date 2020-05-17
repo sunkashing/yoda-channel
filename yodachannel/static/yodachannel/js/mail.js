@@ -48,13 +48,13 @@ function update(data) {
             });
             let prev_mail_date = $('.mail-date').last().text();
             let new_mail_html = build_html(mail, mail_pictures, prev_mail_date);
-            $('.blogs-container').append(new_mail_html);
+            $('.mails-container').append(new_mail_html);
         });
         image_window();
         if (data.has_next === 'true') {
             $('#hidden-page-num').val(data.new_page_num);
         } else {
-            $('.blogs-container').append('<div style="text-align: center; color: black; font-weight: bold">已加载全部</div>');
+            $('.mails-container').append('<div style="text-align: center; color: black; font-weight: bold">已加载全部</div>');
             $('#hidden-page-num').val('#');
         }
     }
@@ -77,11 +77,11 @@ function build_html(mail, mail_pictures, prev_mail_date) {
                             '<div class="mail-title inline">' +
                                 mail[0].fields.mail_title +
                             '</div>' +
-                            '<div class="blog-info mail-date inline">' +
+                            '<div class="mail-info mail-date inline">' +
                                 parse_time(mail[0].fields.created_at) +
                             '</div>' +
                         '</div>' +
-                        '<div class="blog-info weibo-cat inline">' +
+                        '<div class="mail-info weibo-cat inline">' +
                             'Mail' +
                         '</div>' +
                     '</div>' +

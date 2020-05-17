@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <div class="blogs-container">
+    <div class="mails-container">
         {% for mail in mails %}
             {% with previous_element=mails|previous:forloop.counter0 %}
                 {% if previous_element %}
@@ -68,11 +68,11 @@
                             <div class="mail-title inline">
                                 {{ mail.mail_title }}
                             </div>
-                            <div class="blog-info mail-date inline">
+                            <div class="mail-info mail-date inline">
                                 {{ mail.created_at | date:"Y/m/d" }}
                             </div>
                         </div>
-                        <div class="blog-info weibo-cat inline">
+                        <div class="mail-info weibo-cat inline">
                             Mail
                         </div>
                     </div>

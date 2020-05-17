@@ -53,9 +53,23 @@ def create_weibo(weibo):
         parse_blog(new_weibo, weibo)
     elif check_video(new_weibo, weibo):
         parse_video(new_weibo, weibo)
+    elif check_yoda_other(new_weibo, weibo):
+        pass
+        # parse_yoda_other(new_weibo, weibo)
     else:
         new_weibo.is_other = True
         new_weibo.save()
+
+
+# def parse_yoda_other(new_weibo, weibo):
+#
+
+def check_yoda_other(new_weibo, weibo)   :
+    if '与田祐希' in weibo['source'] or '与田祐希' in weibo['topics']:
+        new_weibo.is_yoda_other = True
+        new_weibo.save()
+        return True
+    return False
 
 
 def parse_video(new_weibo, weibo):

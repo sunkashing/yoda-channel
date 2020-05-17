@@ -14,7 +14,7 @@ function scrollBottomOrTop() {
         }
         if (!isNaN(parsed_num)) {
             $.ajax({
-                url: "/yodachannel/video_page?page_num=" + hidden_page_num + "&" + "order=" + parsed_order,
+                url: "/yodachannel/picture_page?page_num=" + hidden_page_num + "&" + "order=" + parsed_order,
                 dataType: "json",
                 success: update
             });
@@ -27,31 +27,31 @@ function scrollBottomOrTop() {
 
 
 function update(data) {
-    let videos = [];
-    let videos_pictures = [];
-    data.videos.forEach(function (video, index, array) {
-        videos.push(JSON.parse(video));
+    let pictures = [];
+    let pictures_pictures = [];
+    data.pictures.forEach(function (picture, index, array) {
+        pictures.push(JSON.parse(picture));
     });
-    data.videos_video.forEach(function (videos_picture, index, array) {
-        videos_pictures.push(JSON.parse(videos_picture));
+    data.pictures_picture.forEach(function (pictures_picture, index, array) {
+        pictures_pictures.push(JSON.parse(pictures_picture));
     });
 
     // let mails_pictures = JSON.parse(data.mails_pictures);
 
     if (data.status === 'SUCCESS') {
         // 循环遍历数据并增加到前端页面
-        videos.forEach(function (video, index, array) {
-            let video_pictures = [];
-            videos_pictures.forEach(function (videos_picture, index, array) {
-                if (videos_picture[0].fields.weibo === video[0].pk) {
-                    video_pictures.push(videos_picture)
+        pictures.forEach(function (picture, index, array) {
+            let picture_pictures = [];
+            pictures_pictures.forEach(function (pictures_picture, index, array) {
+                if (pictures_picture[0].fields.weibo === picture[0].pk) {
+                    picture_pictures.push(pictures_picture)
                 }
             });
-            let prev_video_date = $('.video-date').last().val();
-            let new_video_html = build_html(video, video_pictures, prev_video_date);
-            $('.pictures-container').append(new_video_html);
+            let prev_picture_date = $('.picture-date').last().val();
+            let new_picture_html = build_html(picture, picture_pictures, prev_picture_date);
+            $('.pictures-container').append(new_picture_html);
         });
-        video_window();
+        picture_window();
         if (data.has_next === 'true') {
             $('#hidden-page-num').val(data.new_page_num);
         } else {
@@ -62,27 +62,24 @@ function update(data) {
 }
 
 
-function build_html(video, video_pictures, prev_video_date) {
+function build_html(picture, picture_pictures, prev_picture_date) {
     let new_html = '';
-    if (!is_same_month(prev_video_date, video[0].fields.created_at)) {
-        new_html += '<hr/>' +
-                    '<div class="timeline">' +
-                        parse_timeline_time(video[0].fields.created_at) +
-                    '</div>';
-    }
-    new_html += '<a class="video-container">' +
-                        '<div class="video-picture-container">';
-    if (video_pictures.length > 0) {
-        video_pictures.forEach(function (video_picture, index, array) {
-            new_html += '<img class="video-picture" src="/static/yodachannel/videos/weibo/images/' + video_picture[0].fields.picture_file_name + '">' +
-                            '<input type="hidden" class="video-date" value="' + video[0].fields.created_at+ '">'
+    if (picture_pictures.length > 0) {
+        if (!is_same_month(prev_picture_date, picture[0].fields.created_at)) {
+            new_html += '<hr/>' +
+                        '<div class="timeline">' +
+                            parse_timeline_time(picture[0].fields.created_at) +
+                        '</div>';
+        }
+        picture_pictures.forEach(function (picture_picture, index, array) {
+            new_html += '<a class="picture-container">' +
+                            '<div class="picture-picture-container">';
+            new_html +=         '<img class="picture-picture" src="/static/yodachannel/images/weibo/' + picture_picture[0].fields.file_name + '">' +
+                                '<input type="hidden" class="picture-date" value="' + picture[0].fields.created_at+ '">' +
+                            '</div>' +
+                        '</a>';
         });
     }
-    new_html += '</div>' +
-                '<div class="video-title-container">' +
-                    video[0].fields.video_title +
-                '</div>' +
-            '</a>';
     return new_html
 }
 
