@@ -1,0 +1,115 @@
+{% extends 'yodachannel/base.html' %}
+{% load static %}
+{% load previous_next %}
+
+{% block title %}
+    <title> 资讯 | Yoda Channel</title>
+{% endblock %}
+
+{% block css %}
+    <link href="{% static 'yodachannel/css/mail.css' %}?{% now 'U' %}" rel="stylesheet">
+    <link href="{% static 'yodachannel/css/image_window.css' %}?{% now 'U' %}" rel="stylesheet">
+    <link href="{% static 'yodachannel/css/side_bar.css' %}?{% now 'U' %}" rel="stylesheet">
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'yodachannel/js/info.js'%}?{% now 'U' %}"></script>
+    <script src="{% static 'yodachannel/js/image_window.js'%}?{% now 'U' %}"></script>
+{% endblock %}
+
+{% block contents %}
+
+    <div class="side-bar">
+        <div class="side-bar-content-container">
+            {% if old %}
+                <a href="{% url 'info' 'new' %}" class="side-bar-no-active">
+                    最新
+                </a>
+                <hr>
+                <a href="{% url 'info' 'old' %}" class="side-bar-active">
+                    最旧
+                </a>
+            {% else %}
+                <a href="{% url 'info' 'new' %}" class="side-bar-active">
+                    最新
+                </a>
+                <hr>
+                <a href="{% url 'info' 'old' %}" class="side-bar-no-active">
+                    最旧
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mails-container">
+        {% for mail in mails %}
+            {% with previous_element=mails|previous:forloop.counter0 %}
+                {% if previous_element %}
+                    {% with is_same=previous_element.created_at|is_same_month:mail.created_at %}
+                        {% if not is_same %}
+                            <hr/>
+                            <div class="timeline">
+                                {{ mail.created_at | date:"Y.m" }}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                {% else %}
+                        {% if forloop.first %}
+                            <div class="timeline">
+                                {{ mail.created_at | date:"Y.m" }}
+                            </div>
+                        {% endif %}
+                {% endif %}
+            {% endwith %}
+            <div class="mail-container">
+                <a>
+                    <div class="mail-title-container">
+                        <div class="inline">
+                            <div class="mail-title inline">
+                                無題
+                            </div>
+                            <div class="mail-info mail-date inline">
+                                {{ mail.created_at | date:"Y/m/d" }}
+                            </div>
+                        </div>
+                        <div class="mail-info weibo-cat inline">
+                            Other
+                        </div>
+                    </div>
+                    <hr>
+                    <div style="padding: 10px 30px;">
+                        <div class="mail-text">
+                            {{ mail.text }}
+                        </div>
+                    </div>
+                </a>
+                {% if mails_pictures %}
+                    <hr>
+                    <div class="mail-pictures-container">
+                        {% for pic in mails_pictures %}
+                            {% if pic.weibo_id == mail.id %}
+                                <div class="mail-picture_container inline">
+                                    <img class="mail-picture" src="{% static 'yodachannel/images/weibo/' %}{{ pic.file_name }}">
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+
+    <!-- 弹窗 -->
+    <div id="myModal" class="modal">
+
+        <!-- 弹窗内容 -->
+        <img class="modal-content" id="img01">
+        <!-- 关闭按钮 -->
+        <div class="close-image" onclick="document.getElementById('myModal').style.display='none'">&times;</div>
+
+    </div>
+
+    <input id="hidden-page-num" type="hidden" value="{{ page_num }}">
+
+{% endblock %}

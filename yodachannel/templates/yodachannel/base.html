@@ -57,19 +57,33 @@
         {#                </form>#}
                     </ul>
 
-                    <ul class="navbar-nav ml-auto align-items-center" style="margin-bottom: 0">
+                    <ul class="navbar-nav ml-auto align-items-center" style="margin-bottom: 0; padding-left: 5px">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'index' %}">主页</a>
+                            {% if page == 'index' %}
+                                <a class="page-active nav-link" href="{% url 'index' %}">主页</a>
+                            {% else %}
+                                <a class="nav-link" href="{% url 'index' %}">主页</a>
+                            {% endif %}
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'profile' %}">Yoda 简介</a>
+                            {% if page == 'profile' %}
+                                <a class="nav-link page-active" href="{% url 'profile' %}">Yoda 简介</a>
+                            {% else %}
+                                <a class="nav-link" href="{% url 'profile' %}">Yoda 简介</a>
+                            {% endif %}
                         </li>
 
                         <li class="nav-item dropdown">
-                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Yoda 手机博&博客
-                            </a>
+                            {% if page == 'mail' or page == 'blog' %}
+                                <a class="nav-link page-active" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Yoda 手机博&博客
+                                </a>
+                            {% else %}
+                                <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Yoda 手机博&博客
+                                </a>
+                            {% endif %}
                             <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">
                                 <span class="dropdown-item">
                                     <a href="{% url 'mail' 'new' %}" class="d-block">
@@ -85,34 +99,46 @@
                             </div>
                         </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Yoda 资讯
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">
-                                <span class="dropdown-item">
-                                    <a href="{% url 'index' %}" class="d-block">
-                                        <i class="material-icons prefix">event</i>
-                                        <span class="in-line-span">活动通告</span>
-                                    </a>
-                                    <hr>
-                                    <a href="{% url 'index' %}" class="d-block">
-                                        <i class="material-icons prefix">videocam</i>
-                                        <span class="in-line-span">花絮视频</span>
-                                    </a>
-                                    <hr>
-                                    <a href="{% url 'index' %}" class="d-block">
-                                        <i class="material-icons prefix">work</i>
-                                        <span class="in-line-span">CM</span>
-                                    </a>
-                                </span>
-                            </div>
+                        <li class="nav-item">
+                            {% if page == 'info' %}
+                                <a class="nav-link page-active" href="{% url 'info' 'new' %}">Yoda 资讯</a>
+                            {% else %}
+                                <a class="nav-link" href="{% url 'info' 'new' %}">Yoda 资讯</a>
+                            {% endif %}
                         </li>
 
+{#                        <li class="nav-item dropdown">#}
+{#                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                                Yoda 资讯#}
+{#                            </a>#}
+{#                            <div class="dropdown-menu dropdown-menu-right shadow-lg" aria-labelledby="dropdown02">#}
+{#                                <span class="dropdown-item">#}
+{#                                    <a href="{% url 'index' %}" class="d-block">#}
+{#                                        <i class="material-icons prefix">event</i>#}
+{#                                        <span class="in-line-span">活动通告</span>#}
+{#                                    </a>#}
+{#                                    <hr>#}
+{#                                    <a href="{% url 'index' %}" class="d-block">#}
+{#                                        <i class="material-icons prefix">videocam</i>#}
+{#                                        <span class="in-line-span">花絮视频</span>#}
+{#                                    </a>#}
+{#                                    <hr>#}
+{#                                    <a href="{% url 'index' %}" class="d-block">#}
+{#                                        <i class="material-icons prefix">work</i>#}
+{#                                        <span class="in-line-span">CM</span>#}
+{#                                    </a>#}
+{#                                </span>#}
+{#                            </div>#}
+{#                        </li>#}
+
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'picture' 'new' %}">Yoda 图集</a>
+                            {% if page == 'picture' %}
+                                <a class="nav-link page-active" href="{% url 'picture' 'new' %}">Yoda 图集</a>
+                            {% else %}
+                                <a class="nav-link" href="{% url 'picture' 'new' %}">Yoda 图集</a>
+                            {% endif %}
                         </li>
-                        
+
 {#                        <li class="nav-item dropdown">#}
 {#                            <a class="nav-link" href="#" id="dropdown02" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
 {#                                Yoda 图集#}
@@ -133,7 +159,11 @@
 {#                        </li>#}
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'video' 'new' %}">Yoda 视频</a>
+                            {% if page == 'video' %}
+                                <a class="nav-link page-active" href="{% url 'video' 'new' %}">Yoda 视频</a>
+                            {% else %}
+                                <a class="nav-link" href="{% url 'video' 'new' %}">Yoda 视频</a>
+                            {% endif %}
                         </li>
 
 {#                        <li class="nav-item dropdown">#}

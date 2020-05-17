@@ -127,6 +127,7 @@ def index_action(request):
     print('Mail_nums: {}'.format(Weibo.objects.filter(is_mail=True).count()))
     print('Other_nums: {}'.format(Weibo.objects.filter(is_other=True).count()))
     context = {}
+    context['page'] = 'index'
     if not Weibo.objects.exists():
         load_weibo(os.path.join(settings.STATICFILES_DIR, 'yodachannel/json/5173636286.json'), True)
     return render(request=request, template_name='yodachannel/index.html', context=context)
@@ -134,11 +135,13 @@ def index_action(request):
 
 def profile_action(request):
     context = {}
+    context['page'] = 'profile'
     return render(request=request, template_name='yodachannel/profile.html', context=context)
 
 
 def mail_action(request, order):
     context = {}
+    context['page'] = 'mail'
     if str(order) == 'old':
         mails = Weibo.objects.filter(is_mail=True).order_by('created_at')
         context['old'] = True
@@ -203,6 +206,7 @@ def get_weibo_videos(weibos):
 
 def blog_action(request, order):
     context = {}
+    context['page'] = 'blog'
     if str(order) == 'old':
         blogs = Weibo.objects.filter(is_blog=True).order_by('created_at')
         context['old'] = True
@@ -247,6 +251,7 @@ def blog_page_action(request):
 
 def blog_view_action(request, blog_id):
     context = {}
+    context['page'] = 'blog'
     if type(blog_id) is int:
         blog = [Weibo.objects.get(id=blog_id)]
         context['blog_pictures'] = get_weibo_pictures(blog)
@@ -257,6 +262,7 @@ def blog_view_action(request, blog_id):
 
 def video_action(request, order):
     context = {}
+    context['page'] = 'video'
     if str(order) == 'old':
         videos = Weibo.objects.filter(is_video=True).order_by('created_at')
         context['old'] = True
@@ -343,6 +349,7 @@ def get_video_action(request, path):
 
 def picture_action(request, order):
     context = {}
+    context['page'] = 'picture'
     if str(order) == 'old':
         pictures = Weibo.objects.filter(Q(is_mail=True) or Q(is_yoda_other=True)).order_by('created_at')
         context['old'] = True
@@ -364,7 +371,7 @@ def picture_page_action(request):
     if order == 'old':
         pictures = Weibo.objects.filter(Q(is_mail=True) or Q(is_yoda_other=True)).order_by('created_at')
     else:
-        pictures = Weibo.objects.filter(Q(is_mail=True) or Q(is_yoda_other=True)).order_by('created_at')
+        pictures = Weibo.objects.filter(Q(is_mail=True) or Q(is_yoda_other=True)).order_by('-created_at')
     pictures_paginator = Paginator(pictures, pictures_per_page)
     picture_page_num = int(request.GET.get('page_num'))
 
@@ -386,6 +393,52 @@ def picture_page_action(request):
         context['has_next'] = 'false'
     return JsonResponse(context)
 
+
+def info_action(request, order):
+    context = {}
+    context['page'] = 'info'
+    if str(order) == 'old':
+        mails = Weibo.objects.filter(Q(is_yoda_other=True) or Q(is_other=True)).order_by('created_at')
+        context['old'] = True
+    else:
+        mails = Weibo.objects.filter(Q(is_yoda_other=True) or Q(is_other=True)).order_by('-created_at')
+        context['old'] = False
+    mails_paginator = Paginator(mails, mails_per_page)
+
+    mail_page_num = 1
+    context['mails'] = mails_paginator.get_page(mail_page_num).object_list
+    context['mails_pictures'] = get_weibo_pictures(context['mails'])
+    context['page_num'] = 1
+    return render(request=request, template_name='yodachannel/info.html', context=context)
+
+
+def info_page_action(request):
+    context = {}
+    order = str(request.GET.get('order'))
+    if order == 'old':
+        mails = Weibo.objects.filter(Q(is_yoda_other=True) or Q(is_other=True)).order_by('created_at')
+    else:
+        mails = Weibo.objects.filter(Q(is_yoda_other=True) or Q(is_other=True)).order_by('-created_at')
+    mails_paginator = Paginator(mails, mails_per_page)
+    mail_page_num = int(request.GET.get('page_num'))
+
+    context['status'] = 'SUCCESS'
+    if type(mail_page_num) is not int:
+        mail_page_num = 1
+        context['status'] = 'FAIL'
+    else:
+        mail_page_num += 1
+    mails_list = [mail for mail in mails_paginator.get_page(mail_page_num).object_list]
+    context['mails'] = [serializers.serialize('json', [mail, ]) for mail in mails_list]
+    context['mails_pictures'] = [serializers.serialize('json', [pic, ]) for pic in get_weibo_pictures(mails_list)]
+    context['new_page_num'] = mail_page_num
+
+    # 判断是否有下一页数据
+    if mails_paginator.get_page(mail_page_num).has_next():
+        context['has_next'] = 'true'
+    else:
+        context['has_next'] = 'false'
+    return JsonResponse(context)
 
 
 # 实例化调度器

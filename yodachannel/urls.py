@@ -15,4 +15,6 @@ urlpatterns = [
     path('video_view/<str:path>', views.get_video_action, name='video_view'),
     path('picture/<str:order>', views.picture_action, name='picture'),
     path('picture_page', views.picture_page_action, name='picture_page'),
+    path('info/<str:order>', views.info_action, name='info'),
+    path('info_page', views.info_page_action, name='info_page'),
 ]

@@ -49,7 +49,7 @@ function update(data) {
             });
             let prev_video_date = $('.video-date').last().val();
             let new_video_html = build_html(video, video_pictures, prev_video_date);
-            $('.pictures-container').append(new_video_html);
+            $('.videos-container').append(new_video_html);
         });
         video_window();
         if (data.has_next === 'true') {
