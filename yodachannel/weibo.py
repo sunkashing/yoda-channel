@@ -207,6 +207,7 @@ class Weibo(object):
         """获取用户信息"""
         params = {'containerid': '100505' + str(self.user_config['user_id'])}
         js = self.get_json(params)
+        print(self.user_config)
         print(js)
         if js['ok']:
             info = js['data']['userInfo']

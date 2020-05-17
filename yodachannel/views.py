@@ -21,10 +21,13 @@ from .load_weibo import load_weibo
 from .mixins import APIDetailMixin, APIUpdateMixin, \
     APIDeleteMixin, APIListMixin, \
     APICreateMixin, APIMethodMapMixin, APISingleObjectMixin  # 引入我们编写的所有
+from apscheduler.schedulers.background import BackgroundScheduler
+from django_apscheduler.jobstores import DjangoJobStore, register_events, register_job
 
 from django.http import HttpResponseRedirect
 
 from .models import Weibo, WeiboPicture, WeiboVideo
+from .weibo import main
 
 consumer_key = ''  # 设置你申请的appkey
 consumer_secret = ''  # 设置你申请的appkey对于的secret
@@ -124,7 +127,7 @@ def index_action(request):
     print('Other_nums: {}'.format(Weibo.objects.filter(is_other=True).count()))
     context = {}
     if not Weibo.objects.exists():
-        load_weibo(os.path.join(settings.STATICFILES_DIR, 'yodachannel/json/5173636286.json'))
+        load_weibo(os.path.join(settings.STATICFILES_DIR, 'yodachannel/json/5173636286.json'), True)
     return render(request=request, template_name='yodachannel/index.html', context=context)
 
 
@@ -177,6 +180,10 @@ def mail_page_action(request):
     else:
         context['has_next'] = 'false'
     return JsonResponse(context)
+
+
+# def get_new_mail():
+#
 
 
 def get_weibo_pictures(weibos):
@@ -322,7 +329,8 @@ def get_video_action(request, path):
         if last_byte >= size:
             last_byte = size - 1
         length = last_byte - first_byte + 1
-        resp = StreamingHttpResponse(file_iterator(path, offset=first_byte, length=length), status=206, content_type=content_type)
+        resp = StreamingHttpResponse(file_iterator(path, offset=first_byte, length=length), status=206,
+                                     content_type=content_type)
         resp['Content-Length'] = str(length)
         resp['Content-Range'] = 'bytes %s-%s/%s' % (first_byte, last_byte, size)
     else:
@@ -331,3 +339,21 @@ def get_video_action(request, path):
     resp['Accept-Ranges'] = 'bytes'
     return resp
 
+
+# 实例化调度器
+scheduler = BackgroundScheduler()
+# 调度器使用默认的DjangoJobStore()
+scheduler.add_jobstore(DjangoJobStore(), 'default')
+
+
+# 每天8点半执行这个任务
+@register_job(scheduler, "interval", seconds=60, id='test_job')
+def test():
+    main()
+    load_weibo(os.path.join(settings.BASE_DIR, 'yodachannel/weibo/yoda-channel/7452234433.json'), False)
+    print('Refresh weibo successfully!')
+
+
+# 注册定时任务并开始
+register_events(scheduler)
+scheduler.start()

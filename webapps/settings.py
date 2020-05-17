@@ -40,13 +40,14 @@ WEIIBO_ACCOUNT_PASSWORD = env('WEIBO_ACCOUNT_PASSWORD')
 # Application definition
 
 INSTALLED_APPS = [
+    'django_apscheduler',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'yodachannel'
+    'yodachannel',
 ]
 
 MIDDLEWARE = [
@@ -132,5 +133,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIR = os.path.join(BASE_DIR, 'yodachannel/static/')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'yodachannel/media/yodachannel/')
 
-
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

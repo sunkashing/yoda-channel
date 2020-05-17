@@ -4,6 +4,7 @@ import traceback
 from datetime import datetime
 
 import requests
+from django.db.models import Max
 from requests.adapters import HTTPAdapter
 
 from webapps import settings
@@ -12,11 +13,17 @@ from yodachannel.models import Weibo, WeiboPicture, WeiboVideo
 import json
 
 
-def load_weibo(weibo_json_path):
+def load_weibo(weibo_json_path, init):
     with open(weibo_json_path) as weibo_json:
         data = json.load(weibo_json)
-
+    if not init:
+        max_weibo_id = int(Weibo.objects.all().aggregate(Max('weibo_num'))['weibo_num__max'])
     for weibo in data['weibo']:
+        if not init:
+            newest_weibo_id = int(weibo['id'])
+            if newest_weibo_id <= max_weibo_id:
+                continue
+            print('Loading one new weibo to db...')
         create_weibo(weibo)
 
 

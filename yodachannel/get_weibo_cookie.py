@@ -33,7 +33,7 @@ def get_cookie_from_network():
         print('MacOS')
         driver_location = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                        'chromedriver/MacOS/chromedriver')
-    driver = se.Chrome(driver_location)
+    driver = se.Chrome(driver_location, options=options)
     dic = get_weibo_account_password(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'webapps/.env'))
     url_login = 'https://passport.weibo.cn/signin/login?entry=mweibo&res=wel&wm=3349&r=https%3A%2F%2Fm.weibo.cn'
     driver.get(url_login)
@@ -73,7 +73,7 @@ def get_cookie_from_network():
     cookie_dict = {}
     for cookie in cookie_list:
         # 写入文件
-        f = open('cookies' + os.path.sep + cookie['name'] + '.weibo', 'wb')
+        f = open(os.path.join(settings.BASE_DIR, 'yodachannel/cookies/') + cookie['name'] + '.weibo', 'wb')
         pickle.dump(cookie, f)
         f.close()
         if 'name' in cookie and 'value' in cookie:
@@ -84,11 +84,11 @@ def get_cookie_from_network():
 
 def get_cookie_from_cache():
     cookie_dict = {}
-    for (parent, dirnames, filenames) in os.walk('./cookies/'):
+    for (parent, dirnames, filenames) in os.walk(os.path.join(settings.BASE_DIR, 'yodachannel/cookies/')):
         for filename in filenames:
             if filename.endswith('.weibo'):
                 print(filename)
-                with open('./cookies/' + filename, 'rb') as f:
+                with open(os.path.join(settings.BASE_DIR, 'yodachannel/cookies/') + filename, 'rb') as f:
                     d = pickle.load(f)
                     if 'name' in d and 'value' in d \
                             and 'expiry' in d:
@@ -108,5 +108,4 @@ def get_cookie():
     return cookie_dict
 
 
-if __name__ == '__main__':
-    get_cookie_from_network()
+

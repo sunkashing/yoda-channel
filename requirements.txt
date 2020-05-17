@@ -1,8 +1,9 @@
+apscheduler
 selenium
 opencv-python
 django==3.0.6
-django-haystack==3.0b1
 django-environ
-lxml==4.3.4
-requests==2.22.0
-tqdm==4.32.2
+django-apscheduler==0.3.0
+lxml==4.5.0
+requests==2.23.0
+tqdm==4.46.0

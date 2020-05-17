@@ -1,7 +1,7 @@
 {
-    "user_id_list": ["7452234433"],
+    "user_id_list": "user_id_list.txt",
     "filter": 0,
-    "since_date": "2020-01-01",
+    "since_date": "5",
     "write_mode": ["csv","json"],
     "original_pic_download": 1,
     "retweet_pic_download": 0,
