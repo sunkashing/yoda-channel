@@ -4,6 +4,6 @@ opencv-python
 django==3.0.6
 django-environ
 django-apscheduler==0.3.0
-lxml==4.5.0
+lxml==4.6.3
 requests==2.23.0
 tqdm==4.46.0
