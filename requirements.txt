@@ -1,7 +1,7 @@
 apscheduler
 selenium
 opencv-python
-django==3.0.6
+django==3.1.9
 django-environ
 django-apscheduler==0.3.0
 lxml==4.5.0
